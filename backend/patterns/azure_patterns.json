@@ -1,0 +1,87 @@
+[
+    {
+      "pattern_id": "azure_disk_unattached_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "storage"
+      },
+      "recommended_action": "Identify and delete unattached Premium SSD Managed Disks. Retain a final snapshot if data recovery might be necessary.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_vm_bseries_rightsizing_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "virtual_machines"
+      },
+      "recommended_action": "Evaluate D-Series and E-Series VMs with average CPU utilization under 15%. Downsize to burstable B-Series VMs for non-production workloads.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_blob_cool_tier_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Blob"
+      },
+      "recommended_action": "Implement Azure Blob Storage Lifecycle Management policies to transition objects not modified in 30 days to the Cool access tier.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_sql_serverless_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "sql_database"
+      },
+      "recommended_action": "Migrate development and testing Azure SQL databases from Provisioned compute to the Serverless compute tier with auto-pause enabled.",
+      "savings_range_min_pct": 0.45,
+      "savings_range_max_pct": 0.70,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 6.0,
+      "downtime_risk": "High",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_app_service_plan_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_app_service"
+      },
+      "recommended_action": "Consolidate multiple underutilized App Service Plans into a single plan, or scale down Premium v2/v3 tiers if advanced features are unused.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 10.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    }
+  ]

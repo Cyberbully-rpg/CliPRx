@@ -1,0 +1,87 @@
+[
+    {
+      "pattern_id": "aws_ebs_unattached_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "EBS:VolumeUsage"
+      },
+      "recommended_action": "Identify and delete unattached EBS volumes. If data retention is required, take a final snapshot before deletion.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_ec2_graviton_upgrade_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "BoxUsage:m4"
+      },
+      "recommended_action": "Upgrade legacy m4 instances to m6g (Graviton) instances. This requires ARM architecture compatibility testing.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.25,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 16.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_s3_infrequent_access_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "TimedStorage-ByteHrs"
+      },
+      "recommended_action": "Implement S3 Lifecycle policies to transition Standard storage objects older than 30 days to S3 Standard-Infrequent Access (IA).",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_rds_multiaz_dev_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Multi-AZ"
+      },
+      "recommended_action": "Downgrade non-production and development RDS instances from Multi-AZ deployments to Single-AZ deployments.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "High",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_vpc_endpoint_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "NatGateway-Bytes"
+      },
+      "recommended_action": "Replace NAT Gateway traffic to S3 and DynamoDB with Gateway VPC Endpoints to eliminate data processing charges.",
+      "savings_range_min_pct": 0.60,
+      "savings_range_max_pct": 0.90,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 6.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1"]
+    }
+  ]

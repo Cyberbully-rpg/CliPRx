@@ -1,0 +1,6 @@
+Service,UnBlendedCost,UsageQuantity,UsageType,Region
+Amazon EC2,5000.00,730,BoxUsage:m4.large,us-east-1
+Amazon EC2,10.00,50,EBS:VolumeUsage.piops,us-east-1
+Amazon S3,450.00,20000,TimedStorage-ByteHrs,us-west-2
+Amazon RDS,3000.00,730,Multi-AZ-Usage,us-east-1
+Total,8460.00,,,

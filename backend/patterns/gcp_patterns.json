@@ -1,0 +1,87 @@
+[
+    {
+      "pattern_id": "gcp_pd_unattached_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "compute_engine"
+      },
+      "recommended_action": "Identify and delete unattached Persistent Disks (PDs). Retain a final snapshot if data recovery might be necessary.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_gce_e2_rightsizing_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "compute_engine"
+      },
+      "recommended_action": "Evaluate N1 and N2 instances with average CPU utilization under 15%. Downsize to E2 shared-core instances for non-production workloads.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.35,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_gcs_coldline_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_storage"
+      },
+      "recommended_action": "Implement Cloud Storage Object Lifecycle Management to transition Standard objects older than 30 days to Nearline or Coldline storage.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_sql_zonal_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_sql"
+      },
+      "recommended_action": "Downgrade non-production and development Cloud SQL instances from Regional (HA) deployments to Zonal deployments.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "High",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_bigquery_slots_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "bigquery"
+      },
+      "recommended_action": "Analyze high-cost on-demand BigQuery usage. Consider switching to Capacity pricing (Editions) or utilizing flex slots for predictable workloads.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.30,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 12.0,
+      "downtime_risk": "Low",
+      "complexity": "High",
+      "immutable_blockers": ["tier1"]
+    }
+  ]

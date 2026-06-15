@@ -1,0 +1,9 @@
+# Ignore environments anywhere
+**/venv/
+**/__pycache__/
+
+# Ignore secrets anywhere
+**/.env
+
+# Ignore OS files
+**/.DS_Store
