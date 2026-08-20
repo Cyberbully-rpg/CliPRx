@@ -3,11 +3,13 @@ FastAPI Entry Point (Phase 1)
 Wires the DIPPA Data Ingestion, ML, and Output layers into a single execution pipeline.
 """
 import os
-from fastapi import FastAPI, Request, UploadFile, File, Form, HTTPException
+from fastapi import Depends, FastAPI, Request, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from dotenv import load_dotenv
+
+from api.auth import get_current_user
 
 # Import Data Ingestion Parsers
 from parsers.aws_parser import parse_aws_csv
@@ -77,6 +79,12 @@ async def unhandled_exception_handler(request: Request, exc: Exception):
 async def health_check():
     """Render/UptimeRobot keepalive target (TRD 8.2)."""
     return {"status": "ok"}
+
+
+@app.get("/auth/me")
+async def auth_me(user: dict = Depends(get_current_user)):
+    """TRD 3.1: returns user_id and email extracted from the verified JWT."""
+    return {"user_id": user["user_id"], "email": user["email"]}
 
 
 @app.post("/api/v1/test-pipeline")
