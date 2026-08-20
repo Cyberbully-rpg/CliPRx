@@ -3,6 +3,9 @@ Conflict Resolution Layer
 Applies the three-tier classification to prevent unsafe infrastructure modifications.
 """
 
+RISK_LEVELS = {'Low': 1, 'Medium': 2, 'High': 3}
+
+
 def resolve_conflicts(prescriptions: list[dict]) -> list[dict]:
     """
     Evaluates prescriptions against user-declared service tiers and risk thresholds.
@@ -40,11 +43,15 @@ def resolve_conflicts(prescriptions: list[dict]) -> list[dict]:
                 p['is_conflicted'] = True
                 p['conflict_reason'] = "Service core is immutable"
 
-            # Condition 3: Unacceptable Risk Delta 
-            # The service is currently low risk, but the action introduces high risk.
-            elif base_risk == 'Low' and action_risk == 'High':
+            # Condition 3: Unacceptable Risk Delta
+            # The action introduces MORE risk than the service currently carries, at
+            # any level (Low->Medium, Low->High, Medium->High) -- not just Low->High.
+            # A baseline that's already High can't register a further increase (High
+            # is the ceiling), but Low/Medium baselines are no longer exempt just
+            # because the jump doesn't happen to land exactly on Low->High.
+            elif RISK_LEVELS.get(action_risk, 1) > RISK_LEVELS.get(base_risk, 1):
                 p['is_conflicted'] = True
-                p['conflict_reason'] = "Risk delta exceeds threshold (Low to High)"
+                p['conflict_reason'] = f"Risk delta exceeds threshold ({base_risk} to {action_risk})"
 
             resolved_prescriptions.append(p)
 

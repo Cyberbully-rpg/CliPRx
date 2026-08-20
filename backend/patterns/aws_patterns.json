@@ -83,5 +83,430 @@
       "downtime_risk": "Medium",
       "complexity": "Medium",
       "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_ec2_previous_gen_m3_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "BoxUsage:m3"
+      },
+      "recommended_action": "Upgrade legacy m3 instances to m6i (Intel) or m6g (Graviton) instances for better price-performance.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.30,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 16.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_ec2_previous_gen_c3_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "BoxUsage:c3"
+      },
+      "recommended_action": "Upgrade legacy c3 compute-optimized instances to c6i or c6g instances.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.30,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 16.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_ec2_idle_elastic_ip_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "ElasticIP:IdleAddress"
+      },
+      "recommended_action": "Release unattached Elastic IP addresses that are incurring hourly idle charges.",
+      "savings_range_min_pct": 0.90,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.25,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_ec2_spot_eligible_workload_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "BoxUsage:c5"
+      },
+      "recommended_action": "Migrate stateless, fault-tolerant batch or CI workloads running on c5 On-Demand instances to Spot Instances.",
+      "savings_range_min_pct": 0.60,
+      "savings_range_max_pct": 0.90,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 10.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_ec2_gpu_underutilized_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "BoxUsage:p3"
+      },
+      "recommended_action": "Right-size underutilized p3 GPU instances to g4dn or p4 instances based on actual ML workload utilization.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 12.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_ebs_gp2_to_gp3_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "VolumeUsage.gp2"
+      },
+      "recommended_action": "Migrate GP2 EBS volumes to GP3, which offers the same baseline performance at a lower per-GB price with independently scalable IOPS.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.20,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_ebs_snapshot_cleanup_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "SnapshotUsage"
+      },
+      "recommended_action": "Identify and delete EBS snapshots older than 90 days with no active lifecycle policy or retention requirement.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.80,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_ebs_io1_overprovisioned_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "VolumeUsage.io1"
+      },
+      "recommended_action": "Review IOPS-provisioned io1 volumes with low actual IOPS utilization and downgrade to gp3.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_s3_glacier_transition_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "TimedStorage-SIA-ByteHrs"
+      },
+      "recommended_action": "Transition S3 Standard-IA objects older than 90 days to S3 Glacier Instant Retrieval for archival cost savings.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.60,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_s3_incomplete_multipart_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Requests-Tier2"
+      },
+      "recommended_action": "Enable an S3 Lifecycle rule to automatically abort incomplete multipart uploads after 7 days, reclaiming storage silently consumed by failed uploads.",
+      "savings_range_min_pct": 0.05,
+      "savings_range_max_pct": 0.15,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_s3_versioning_bloat_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "amazons3"
+      },
+      "recommended_action": "Enable S3 Lifecycle rules to expire non-current object versions after 30 days on versioned buckets showing high storage growth.",
+      "savings_range_min_pct": 0.10,
+      "savings_range_max_pct": 0.25,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_rds_reserved_instance_gap_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "InstanceUsage:db.m5"
+      },
+      "recommended_action": "Purchase RDS Reserved Instances or Savings Plans for steady-state production database instances currently running On-Demand.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_rds_storage_autoscaling_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "RDS:GP2-Storage"
+      },
+      "recommended_action": "Right-size over-provisioned RDS GP2 storage allocations and enable Storage Autoscaling instead of static over-allocation.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.30,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_rds_idle_read_replica_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "InstanceUsage:db.r5"
+      },
+      "recommended_action": "Identify RDS read replicas with sustained low query volume and consolidate or remove them.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.70,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_dynamodb_provisioned_idle_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "ReadCapacityUnit-Hrs"
+      },
+      "recommended_action": "Switch DynamoDB tables with unpredictable or low traffic from Provisioned to On-Demand capacity mode.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_dynamodb_ondemand_high_volume_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "PayPerRequestThroughput"
+      },
+      "recommended_action": "Switch high, predictable-traffic DynamoDB tables from On-Demand back to Provisioned capacity with auto-scaling for lower effective cost.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_redshift_pause_dev_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Node:ra3"
+      },
+      "recommended_action": "Pause non-production Redshift clusters outside business hours, or migrate to Redshift Serverless for intermittent workloads.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.65,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 6.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_elb_idle_loadbalancer_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "LoadBalancerUsage"
+      },
+      "recommended_action": "Identify and delete Elastic Load Balancers with zero or near-zero registered healthy targets over the last 14 days.",
+      "savings_range_min_pct": 0.90,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.5,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_cloudfront_cache_hit_low_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "amazoncloudfront"
+      },
+      "recommended_action": "Improve CloudFront cache hit ratio by extending TTLs and enabling compression to reduce origin data transfer costs.",
+      "savings_range_min_pct": 0.10,
+      "savings_range_max_pct": 0.25,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_data_transfer_cross_az_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "DataTransfer-Regional-Bytes"
+      },
+      "recommended_action": "Reduce cross-AZ data transfer charges by co-locating tightly-coupled services within the same Availability Zone where architecture allows.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.60,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_vpn_idle_connection_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "VPN-Usage"
+      },
+      "recommended_action": "Identify and decommission unused Site-to-Site VPN connections with no active tunnel traffic.",
+      "savings_range_min_pct": 0.85,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_cloudwatch_log_retention_001",
+      "service_type": "monitoring",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "DataProcessing-Bytes"
+      },
+      "recommended_action": "Set explicit log retention policies (e.g. 30-90 days) on CloudWatch Log Groups currently set to Never Expire, and reduce verbosity of high-volume debug logs.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.60,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_cloudtrail_duplicate_trails_001",
+      "service_type": "monitoring",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "PaidEventsRecorded"
+      },
+      "recommended_action": "Consolidate duplicate multi-region CloudTrail trails logging the same management events into a single organization trail.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "aws_backup_retention_excess_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "BackupUsage"
+      },
+      "recommended_action": "Reduce AWS Backup retention periods for non-compliance-driven backup plans from indefinite to a defined 30-90 day window.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "aws_sagemaker_idle_notebook_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "amazonsagemaker"
+      },
+      "recommended_action": "Identify SageMaker Notebook Instances left running outside working hours and enable auto-stop scheduling.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 0.80,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
     }
   ]

@@ -83,5 +83,430 @@
       "downtime_risk": "Medium",
       "complexity": "Medium",
       "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_vm_reserved_instance_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "virtual_machines"
+      },
+      "recommended_action": "Purchase 1-year or 3-year Reserved VM Instances for steady-state, predictable production virtual machine workloads.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_vm_spot_eligible_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "virtual_machines"
+      },
+      "recommended_action": "Migrate fault-tolerant batch, dev/test, or CI virtual machine workloads to Azure Spot VMs.",
+      "savings_range_min_pct": 0.60,
+      "savings_range_max_pct": 0.90,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_vm_deallocate_idle_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "virtual_machines"
+      },
+      "recommended_action": "Identify VMs running outside business hours with no scheduled auto-shutdown and enable Azure Automation-based deallocation.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_disk_premium_to_standard_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "storage"
+      },
+      "recommended_action": "Downgrade Premium SSD Managed Disks with consistently low IOPS utilization to Standard SSD.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.60,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_disk_snapshot_cleanup_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Snapshot"
+      },
+      "recommended_action": "Delete Managed Disk snapshots older than 90 days with no retention policy justification.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.80,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_blob_lifecycle_archive_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Archive"
+      },
+      "recommended_action": "Extend Blob Storage lifecycle policies to transition Cool-tier objects untouched for 180+ days to the Archive tier.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 0.75,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_storage_redundancy_downgrade_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "storage"
+      },
+      "recommended_action": "Review GRS/RA-GRS redundant storage accounts holding non-critical data and downgrade to LRS where geo-redundancy isn't required.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_sql_reserved_capacity_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "sql_database"
+      },
+      "recommended_action": "Purchase Azure SQL Reserved Capacity for steady-state provisioned-tier production databases.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_sql_elastic_pool_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "sql_database"
+      },
+      "recommended_action": "Consolidate multiple lightly-utilized single Azure SQL databases into an Elastic Pool to share compute and storage capacity.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_cosmosdb_autoscale_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cosmos_db"
+      },
+      "recommended_action": "Switch Cosmos DB containers with unpredictable or spiky traffic from manual provisioned throughput to autoscale.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_cosmosdb_ru_overprovisioned_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cosmos_db"
+      },
+      "recommended_action": "Right-size over-provisioned Request Units (RU/s) on Cosmos DB containers based on actual consumption metrics.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_app_service_downscale_dev_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_app_service"
+      },
+      "recommended_action": "Downscale non-production App Service Plans from Premium to Standard or Basic tiers outside working hours.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_functions_premium_idle_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_functions"
+      },
+      "recommended_action": "Evaluate Azure Functions on the Premium plan with low invocation volume and migrate to the Consumption plan.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.70,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_aks_node_rightsizing_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_kubernetes_service"
+      },
+      "recommended_action": "Right-size AKS node pools with sustained low CPU/memory utilization and enable the cluster autoscaler.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_loadbalancer_idle_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "load_balancer"
+      },
+      "recommended_action": "Identify and delete Azure Load Balancers with no active backend pool members.",
+      "savings_range_min_pct": 0.90,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_public_ip_unassociated_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "IP Address"
+      },
+      "recommended_action": "Release unassociated Azure Public IP addresses accruing standby charges.",
+      "savings_range_min_pct": 0.85,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.25,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_bandwidth_cross_region_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Data Transfer"
+      },
+      "recommended_action": "Reduce cross-region VNet peering data transfer costs by co-locating dependent resources within the same region.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_vpn_gateway_unused_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "vpn_gateway"
+      },
+      "recommended_action": "Decommission VPN Gateways with no active site-to-site or point-to-site connections.",
+      "savings_range_min_pct": 0.85,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_monitor_log_retention_001",
+      "service_type": "monitoring",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Data Ingestion"
+      },
+      "recommended_action": "Reduce Log Analytics workspace retention from indefinite to a defined 30-90 day window and configure exclusion filters for high-volume diagnostic categories.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.60,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_backup_retention_excess_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_backup"
+      },
+      "recommended_action": "Reduce Azure Backup vault retention periods for non-compliance-driven policies from indefinite to a defined 30-90 day window.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_synapse_pause_dev_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "synapse_analytics"
+      },
+      "recommended_action": "Pause non-production Synapse Analytics dedicated SQL pools outside business hours.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.65,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 6.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_devtest_labs_shutdown_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "devtest_labs"
+      },
+      "recommended_action": "Enable auto-shutdown schedules on DevTest Labs VMs left running outside working hours.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.5,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_container_registry_tier_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "container_registry"
+      },
+      "recommended_action": "Downgrade an over-provisioned Premium Azure Container Registry to Standard tier if geo-replication and advanced throughput aren't required.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_databricks_cluster_idle_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_databricks"
+      },
+      "recommended_action": "Enable automatic cluster termination on idle Azure Databricks clusters after a defined inactivity window.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_event_hub_throughput_units_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "event_hubs"
+      },
+      "recommended_action": "Right-size over-provisioned Event Hubs throughput units based on actual ingress/egress metrics, or enable auto-inflate.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1", "tier2"]
     }
   ]

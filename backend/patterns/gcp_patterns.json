@@ -83,5 +83,430 @@
       "downtime_risk": "Low",
       "complexity": "High",
       "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_gce_committed_use_discount_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "compute_engine"
+      },
+      "recommended_action": "Purchase 1-year or 3-year Committed Use Discounts for steady-state, predictable production Compute Engine workloads.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_gce_preemptible_spot_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "compute_engine"
+      },
+      "recommended_action": "Migrate fault-tolerant batch or CI workloads to Spot VMs (formerly Preemptible) for substantial compute savings.",
+      "savings_range_min_pct": 0.60,
+      "savings_range_max_pct": 0.91,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_gce_idle_instance_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "compute_engine"
+      },
+      "recommended_action": "Identify Compute Engine instances with sustained near-zero CPU utilization and stop or delete them.",
+      "savings_range_min_pct": 0.85,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_pd_snapshot_cleanup_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Snapshot"
+      },
+      "recommended_action": "Delete Persistent Disk snapshots older than 90 days with no retention policy justification.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.80,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_pd_ssd_to_standard_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "compute_engine"
+      },
+      "recommended_action": "Downgrade SSD Persistent Disks with consistently low IOPS utilization to Standard (HDD) Persistent Disks.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.65,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_gcs_lifecycle_archive_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_storage"
+      },
+      "recommended_action": "Extend Cloud Storage Object Lifecycle Management to transition Nearline objects untouched for 180+ days to Archive class.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 0.75,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_gcs_multiregion_downgrade_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_storage"
+      },
+      "recommended_action": "Review multi-region Cloud Storage buckets holding non-critical data and downgrade to regional storage where geo-redundancy isn't required.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_sql_committed_use_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_sql"
+      },
+      "recommended_action": "Purchase Committed Use Discounts for steady-state production Cloud SQL instances.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.52,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_sql_storage_autoscale_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_sql"
+      },
+      "recommended_action": "Enable automatic storage increase on Cloud SQL instances instead of static, over-provisioned storage allocation.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.30,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.5,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_bigquery_flat_rate_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "bigquery"
+      },
+      "recommended_action": "Switch heavy, predictable BigQuery on-demand query workloads to Flat-Rate (Capacity) pricing.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 6.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_bigquery_storage_longterm_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "bigquery"
+      },
+      "recommended_action": "Avoid repeatedly modifying inactive tables/partitions untouched for 90+ days so they qualify for BigQuery's automatic long-term storage discount.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.35,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_gke_node_rightsizing_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "kubernetes_engine"
+      },
+      "recommended_action": "Right-size GKE node pools with sustained low CPU/memory utilization and enable the cluster autoscaler.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_gke_autopilot_migration_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "kubernetes_engine"
+      },
+      "recommended_action": "Evaluate migrating small, variable-load GKE Standard clusters to GKE Autopilot to eliminate node over-provisioning.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.35,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 10.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_cloudfunctions_memory_overprovisioned_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_functions"
+      },
+      "recommended_action": "Right-size over-provisioned memory allocation on Cloud Functions based on actual peak memory usage metrics.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.35,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_cloudrun_min_instances_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_run"
+      },
+      "recommended_action": "Reduce minimum instance count on Cloud Run services configured for always-on availability where request patterns don't require it.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.5,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_loadbalancer_idle_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_load_balancing"
+      },
+      "recommended_action": "Identify and delete Cloud Load Balancing forwarding rules with no active backend traffic.",
+      "savings_range_min_pct": 0.90,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_static_ip_unassociated_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "IP"
+      },
+      "recommended_action": "Release unassociated static external IP addresses accruing standby charges.",
+      "savings_range_min_pct": 0.85,
+      "savings_range_max_pct": 1.00,
+      "engineering_hours_min": 0.25,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_interconnect_underutilized_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_interconnect"
+      },
+      "recommended_action": "Downgrade an underutilized Dedicated Interconnect connection to a lower capacity tier or shared VLAN attachment.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_nat_gateway_data_processing_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "NAT"
+      },
+      "recommended_action": "Replace Cloud NAT traffic to Google APIs with Private Google Access or Private Service Connect to eliminate NAT data processing charges.",
+      "savings_range_min_pct": 0.50,
+      "savings_range_max_pct": 0.80,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 6.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_logging_retention_001",
+      "service_type": "monitoring",
+      "trigger_condition": {
+        "field": "usage_type",
+        "operator": "contains",
+        "value": "Log"
+      },
+      "recommended_action": "Reduce Cloud Logging retention from indefinite to a defined 30-90 day window and configure exclusion filters for high-volume debug logs.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.60,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_dataflow_idle_workers_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "dataflow"
+      },
+      "recommended_action": "Enable Dataflow autoscaling on streaming pipelines currently running with a fixed, over-provisioned worker count.",
+      "savings_range_min_pct": 0.25,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_dataproc_cluster_idle_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "dataproc"
+      },
+      "recommended_action": "Enable Dataproc cluster idle-timeout auto-deletion for ephemeral job clusters left running after job completion.",
+      "savings_range_min_pct": 0.40,
+      "savings_range_max_pct": 0.70,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_memorystore_overprovisioned_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "memorystore"
+      },
+      "recommended_action": "Right-size over-provisioned Memorystore (Redis) instance tiers based on actual memory utilization.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_composer_environment_size_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_composer"
+      },
+      "recommended_action": "Downsize an over-provisioned Cloud Composer environment (Airflow) whose scheduler/worker resources exceed actual DAG concurrency needs.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_artifact_registry_storage_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "artifact_registry"
+      },
+      "recommended_action": "Configure Artifact Registry cleanup policies to delete untagged or superseded container image versions older than 30 days.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.5,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
     }
   ]

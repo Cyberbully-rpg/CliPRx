@@ -36,10 +36,18 @@ def parse_aws_csv(file_content: bytes) -> pd.DataFrame:
             if col not in df.columns:
                 df[col] = 0.0
 
-        df['service_name'] = df['service_name'].astype(str).str.lower().str.replace(' ', '_')
+        df['service_name'] = df['service_name'].astype(str).str.strip().str.lower().str.replace(' ', '_')
 
-        df['cost_usd'] = pd.to_numeric(df['cost_usd'], errors='coerce').fillna(0.0)
-        df['usage_quantity'] = pd.to_numeric(df['usage_quantity'], errors='coerce').fillna(0.0)
+        # Strip thousands separators / currency symbols before numeric coercion, so
+        # values like "1,240.50" or "$450.00" don't silently become NaN -> 0.0
+        df['cost_usd'] = pd.to_numeric(
+            df['cost_usd'].astype(str).str.replace(',', '', regex=False).str.replace('$', '', regex=False).str.strip(),
+            errors='coerce'
+        ).fillna(0.0)
+        df['usage_quantity'] = pd.to_numeric(
+            df['usage_quantity'].astype(str).str.replace(',', '', regex=False).str.strip(),
+            errors='coerce'
+        ).fillna(0.0)
 
         df = df[~df['service_name'].str.contains('total', na=False)]
 
@@ -49,7 +57,15 @@ def parse_aws_csv(file_content: bytes) -> pd.DataFrame:
         df['billing_period_start'] = current_time.replace(day=1)
         df['billing_period_end'] = current_time
 
-        df['tier'] = 3
+        # Honor a 'tier' column if the source CSV provides one (e.g. "tier1", "2"),
+        # defaulting to 3 (fully mutable) for missing/unrecognized values.
+        if 'tier' in df.columns:
+            extracted_tier = pd.to_numeric(
+                df['tier'].astype(str).str.extract(r'(\d)', expand=False), errors='coerce'
+            )
+            df['tier'] = extracted_tier.where(extracted_tier.isin([1, 2, 3]), 3).astype(int)
+        else:
+            df['tier'] = 3
 
         final_columns = [
             'service_name',

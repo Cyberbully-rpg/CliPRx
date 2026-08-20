@@ -6,6 +6,70 @@ import pandas as pd
 import json
 import os
 
+# Maps a normalized service_name to the broad category patterns declare via
+# 'service_type'. Only needed for providers/patterns whose trigger_condition matches
+# on a field OTHER than service_name (e.g. Azure patterns keyed on 'usage_type') --
+# otherwise the field match already IS the service check. This is a coarse check
+# (e.g. "database") -- see PATTERN_ALLOWED_SERVICES below for AWS, which needs
+# service-level (not just category-level) precision, since two different services in
+# the same broad category (e.g. RDS vs Redshift, both "database") can still have
+# usage_type strings that coincidentally overlap.
+SERVICE_CATEGORY_MAP = {
+    'azure': {
+        'storage': 'storage',
+        'virtual_machines': 'compute',
+        'sql_database': 'database',
+        'azure_app_service': 'compute',
+    },
+    # GCP's own patterns match on service_name directly (a single GCP service, e.g.
+    # "compute_engine", legitimately spans multiple service_types like compute + disk
+    # storage), so no category map is needed/safe to apply there.
+}
+
+# AWS patterns are almost all keyed on 'usage_type', so a broad category isn't
+# precise enough to prevent cross-service false positives (e.g. an RDS row whose
+# usage_type coincidentally contains "Node:ra3" matching the Redshift pattern, even
+# though both are "database"). This maps each usage_type-keyed pattern_id to exactly
+# which normalized service_name(s) can legitimately produce that usage_type.
+#
+# Some services legitimately span multiple patterns' categories -- e.g. EBS volume
+# and Elastic IP costs bill under the AmazonEC2 service line in real AWS billing, so
+# 'amazonec2' appears alongside 'amazonebs' for those patterns.
+#
+# Patterns not listed here (e.g. aws_data_transfer_cross_az_001) are intentionally
+# left unrestricted: their usage_type genuinely occurs across many unrelated services
+# and can't be tied to a specific one.
+PATTERN_ALLOWED_SERVICES = {
+    'aws': {
+        'aws_ebs_unattached_001': {'amazonec2', 'amazonebs'},
+        'aws_ec2_graviton_upgrade_001': {'amazonec2'},
+        'aws_s3_infrequent_access_001': {'amazons3'},
+        'aws_rds_multiaz_dev_001': {'amazonrds'},
+        'aws_vpc_endpoint_001': {'amazonvpc'},
+        'aws_ec2_previous_gen_m3_001': {'amazonec2'},
+        'aws_ec2_previous_gen_c3_001': {'amazonec2'},
+        'aws_ec2_idle_elastic_ip_001': {'amazonec2'},
+        'aws_ec2_spot_eligible_workload_001': {'amazonec2'},
+        'aws_ec2_gpu_underutilized_001': {'amazonec2'},
+        'aws_ebs_gp2_to_gp3_001': {'amazonec2', 'amazonebs'},
+        'aws_ebs_snapshot_cleanup_001': {'amazonec2', 'amazonebs'},
+        'aws_ebs_io1_overprovisioned_001': {'amazonec2', 'amazonebs'},
+        'aws_s3_glacier_transition_001': {'amazons3'},
+        'aws_s3_incomplete_multipart_001': {'amazons3'},
+        'aws_rds_reserved_instance_gap_001': {'amazonrds'},
+        'aws_rds_storage_autoscaling_001': {'amazonrds'},
+        'aws_rds_idle_read_replica_001': {'amazonrds'},
+        'aws_dynamodb_provisioned_idle_001': {'amazondynamodb'},
+        'aws_dynamodb_ondemand_high_volume_001': {'amazondynamodb'},
+        'aws_redshift_pause_dev_001': {'amazonredshift'},
+        'aws_elb_idle_loadbalancer_001': {'amazonelasticloadbalancing'},
+        'aws_vpn_idle_connection_001': {'awsvpn'},
+        'aws_cloudwatch_log_retention_001': {'amazoncloudwatch'},
+        'aws_cloudtrail_duplicate_trails_001': {'awscloudtrail'},
+        'aws_backup_retention_excess_001': {'awsbackup'},
+    },
+}
+
 def match_patterns(df: pd.DataFrame, cloud_provider: str, anomaly_threshold: float = 0.65) -> list[dict]:
     """
     Filters DataFrame for anomalies, loads the correct cloud pattern library,
@@ -14,19 +78,22 @@ def match_patterns(df: pd.DataFrame, cloud_provider: str, anomaly_threshold: flo
     try:
         # 1. Filter out normal traffic to save compute time
         anomalies = df[df['anomaly_score'] >= anomaly_threshold].copy()
-        
+
         if anomalies.empty:
             return []
 
         # 2. Resolve absolute path to the JSON pattern files
         base_dir = os.path.dirname(os.path.abspath(__file__))
         pattern_file = os.path.join(base_dir, '..', 'patterns', f"{cloud_provider.lower()}_patterns.json")
-        
+
         if not os.path.exists(pattern_file):
             raise FileNotFoundError(f"Pattern library not found for provider: {cloud_provider}")
 
         with open(pattern_file, 'r', encoding='utf-8') as f:
             patterns = json.load(f)
+
+        category_map = SERVICE_CATEGORY_MAP.get(cloud_provider.lower(), {})
+        pattern_allowed_services = PATTERN_ALLOWED_SERVICES.get(cloud_provider.lower(), {})
 
         raw_prescriptions = []
 
@@ -50,6 +117,24 @@ def match_patterns(df: pd.DataFrame, cloud_provider: str, anomaly_threshold: flo
                     is_match = True
                 elif operator == 'contains' and target_value in actual_value:
                     is_match = True
+
+                # When the trigger isn't already keyed on service_name, cross-check the
+                # row's actual service against what the pattern is meant for, so a
+                # usage_type substring coincidence can't produce a wrong-service
+                # recommendation. Unknown/uncatalogued services are let through as before.
+                if is_match and target_field != 'service_name':
+                    allowed_services = pattern_allowed_services.get(pattern.get('pattern_id'))
+                    if allowed_services is not None:
+                        # Exact, service-level allowlist (precise enough to tell RDS
+                        # apart from Redshift even though both are "database").
+                        if row['service_name'] not in allowed_services:
+                            is_match = False
+                    else:
+                        # Fallback for patterns/providers without an explicit
+                        # allowlist: broad category comparison.
+                        row_category = category_map.get(row['service_name'])
+                        if row_category is not None and row_category != pattern.get('service_type'):
+                            is_match = False
 
                 # If the logic triggers, build the raw prescription object
                 if is_match:

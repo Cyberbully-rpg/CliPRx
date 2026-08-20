@@ -3,5 +3,8 @@
   "python.analysis.extraPaths": [
     "${workspaceFolder}/backend"
   ],
-  "python-envs.pythonProjects": []
+  "python-envs.pythonProjects": [],
+  "cursorpyright.analysis.extraPaths": [
+    "${workspaceFolder}/backend"
+  ]
 }

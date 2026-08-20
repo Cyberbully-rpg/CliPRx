@@ -1,0 +1,156 @@
+service.description,cost,usage.amount,usage.unit,location.region
+Cloud Storage,3.8829,331.17,Standard Storage US Multi-Region,us-central1
+Cloud Logging,1.0592,416.9,Log Volume,europe-west1
+Cloud Logging,4.9911,53.53,Log Volume,asia-south1
+Compute Engine,2.5956,52.6,N1 Standard Instance Core,us-central1
+Compute Engine,12.5511,77.49,N1 Standard Instance Core,us-central1
+Compute Engine,4.9997,388.93,N1 Standard Instance Core,us-central1
+Cloud Logging,1.0926,458.09,Log Volume,asia-south1
+Cloud Logging,3.2068,300.2,Log Volume,asia-south1
+Cloud Storage,0.632,336.45,Standard Storage US Multi-Region,europe-west1
+Cloud Logging,2.306,268.18,Log Volume,europe-west1
+Cloud Functions,0.3126,308.54,Invocations,europe-west1
+Cloud Logging,4.0856,433.88,Log Volume,europe-west1
+Cloud Storage,3.9194,321.6,Standard Storage US Multi-Region,asia-south1
+Cloud Logging,4.8281,332.76,Log Volume,us-central1
+Compute Engine,4.9999,72.79,N1 Standard Instance Core,asia-south1
+Cloud Functions,3.7575,286.29,Invocations,europe-west1
+Cloud Storage,1.9986,144.88,Standard Storage US Multi-Region,asia-south1
+Cloud Functions,1.5799,343.19,Invocations,us-central1
+Cloud Logging,0.6367,278.04,Log Volume,asia-south1
+Cloud Functions,3.4408,379.5,Invocations,us-central1
+Cloud Functions,3.8857,446.67,Invocations,europe-west1
+Cloud Logging,2.2294,79.65,Log Volume,europe-west1
+Cloud Functions,1.2932,290.03,Invocations,us-central1
+Cloud Functions,2.4376,437.41,Invocations,us-central1
+Cloud Logging,1.4104,143.08,Log Volume,asia-south1
+Cloud Logging,0.7709,187.43,Log Volume,europe-west1
+Cloud Logging,5.1089,21.04,Log Volume,asia-south1
+Cloud Logging,5.6487,219.51,Log Volume,us-central1
+Cloud Logging,1.5901,455.41,Log Volume,asia-south1
+Cloud Functions,2.5684,144.79,Invocations,europe-west1
+Cloud Logging,3.6961,100.69,Log Volume,asia-south1
+Compute Engine,9.9228,43.14,N1 Standard Instance Core,europe-west1
+Cloud Functions,3.7184,386.28,Invocations,asia-south1
+Cloud Logging,0.7391,91.57,Log Volume,asia-south1
+Cloud Logging,1.1706,294.54,Log Volume,europe-west1
+Compute Engine,521.18,889.94,N1 Standard Instance Core Hours,europe-west1
+Cloud Storage,2.4084,283.05,Standard Storage US Multi-Region,asia-south1
+Cloud Logging,1.7867,30.09,Log Volume,asia-south1
+Cloud Logging,3.7694,73.94,Log Volume,us-central1
+Cloud Storage,1.3144,119.09,Standard Storage US Multi-Region,europe-west1
+Compute Engine,14.8062,359.16,N1 Standard Instance Core,europe-west1
+Compute Engine,14.2584,458.26,N1 Standard Instance Core,us-central1
+Cloud Functions,2.557,425.71,Invocations,asia-south1
+Cloud Logging,2.1148,331.3,Log Volume,us-central1
+Cloud Functions,0.5504,11.55,Invocations,us-central1
+Cloud Logging,3.0826,95.55,Log Volume,europe-west1
+Compute Engine,2.0355,71.03,N1 Standard Instance Core,europe-west1
+Cloud Storage,1.1515,204.86,Standard Storage US Multi-Region,europe-west1
+Cloud Logging,5.7031,127.44,Log Volume,asia-south1
+Cloud Storage,455.06,981.03,Standard Storage US Multi-Region,europe-west1
+Cloud Storage,4.4912,70.98,Standard Storage US Multi-Region,asia-south1
+Cloud Logging,4.0176,133.97,Log Volume,europe-west1
+Compute Engine,9.7034,277.24,N1 Standard Instance Core,asia-south1
+Cloud Storage,0.7121,252.76,Standard Storage US Multi-Region,us-central1
+Compute Engine,3.4349,347.7,N1 Standard Instance Core,asia-south1
+Cloud Storage,3.4355,197.42,Standard Storage US Multi-Region,europe-west1
+Compute Engine,7.4292,209.03,N1 Standard Instance Core,us-central1
+Cloud Logging,5.1717,29.56,Log Volume,us-central1
+Cloud Logging,2.7691,187.72,Log Volume,europe-west1
+Cloud Storage,4.0887,84.32,Standard Storage US Multi-Region,europe-west1
+Cloud Functions,0.8591,233.89,Invocations,asia-south1
+Cloud Storage,1.5794,459.3,Standard Storage US Multi-Region,europe-west1
+Cloud Storage,2.5536,72.8,Standard Storage US Multi-Region,asia-south1
+Cloud Functions,0.7811,27.64,Invocations,us-central1
+Compute Engine,11.8665,332.49,N1 Standard Instance Core,europe-west1
+Compute Engine,9.2859,400.94,N1 Standard Instance Core,us-central1
+Compute Engine,12.1632,234.22,N1 Standard Instance Core,asia-south1
+Cloud Functions,1.8049,416.51,Invocations,asia-south1
+Cloud Functions,0.6359,479.48,Invocations,asia-south1
+Compute Engine,2.5264,100.75,N1 Standard Instance Core,asia-south1
+Compute Engine,2.9736,462.63,N1 Standard Instance Core,europe-west1
+Compute Engine,0.6784,227.7,N1 Standard Instance Core,asia-south1
+Cloud Storage,0.856,341.84,Standard Storage US Multi-Region,us-central1
+Cloud Functions,0.1696,55.46,Invocations,asia-south1
+Cloud Storage,2.8175,32.84,Standard Storage US Multi-Region,us-central1
+Cloud Functions,0.6248,268.5,Invocations,asia-south1
+Compute Engine,4.8638,244.8,N1 Standard Instance Core,europe-west1
+Compute Engine,8.6918,286.64,N1 Standard Instance Core,us-central1
+Cloud Logging,4.0892,402.39,Log Volume,asia-south1
+Compute Engine,4.8719,315.51,N1 Standard Instance Core,europe-west1
+Cloud Logging,0.7058,277.87,Log Volume,us-central1
+Cloud Logging,1.8246,72.37,Log Volume,us-central1
+Cloud Functions,0.729,251.02,Invocations,europe-west1
+Cloud Functions,3.3362,404.32,Invocations,europe-west1
+Cloud Logging,0.7289,247.5,Log Volume,europe-west1
+Compute Engine,469.25,137.13,Persistent Disk SSD,asia-south1
+Cloud Logging,4.3298,223.63,Log Volume,us-central1
+Cloud Functions,0.6452,58.15,Invocations,europe-west1
+Cloud Logging,5.4646,489.81,Log Volume,asia-south1
+Compute Engine,1.8114,448.62,N1 Standard Instance Core,europe-west1
+Compute Engine,2.2361,59.43,N1 Standard Instance Core,asia-south1
+Cloud Logging,1.1806,463.85,Log Volume,us-central1
+Cloud Functions,2.6657,209.89,Invocations,us-central1
+Cloud Logging,4.7917,240.21,Log Volume,asia-south1
+Cloud Storage,2.3019,136.85,Standard Storage US Multi-Region,asia-south1
+Compute Engine,1.8656,487.84,N1 Standard Instance Core,asia-south1
+Cloud Logging,1.7631,66.78,Log Volume,us-central1
+Cloud Storage,3.0695,434.0,Standard Storage US Multi-Region,europe-west1
+Cloud Storage,4.7969,241.67,Standard Storage US Multi-Region,us-central1
+BigQuery,1043.45,187.87,Analysis On Demand,us-central1
+Cloud Storage,2.2173,314.03,Standard Storage US Multi-Region,asia-south1
+Cloud Functions,0.4707,308.47,Invocations,europe-west1
+Compute Engine,1.1512,218.11,N1 Standard Instance Core,us-central1
+Cloud Logging,1.8716,286.05,Log Volume,us-central1
+Cloud Logging,5.7409,146.17,Log Volume,us-central1
+Cloud Storage,0.2772,3.71,Standard Storage US Multi-Region,europe-west1
+Cloud Logging,3.9742,379.29,Log Volume,asia-south1
+Cloud Storage,3.6996,97.33,Standard Storage US Multi-Region,us-central1
+Compute Engine,10.0616,363.77,N1 Standard Instance Core,us-central1
+Cloud Logging,5.8213,163.59,Log Volume,asia-south1
+Cloud Functions,1.3182,416.3,Invocations,asia-south1
+Cloud Logging,4.1918,167.49,Log Volume,asia-south1
+Compute Engine,4.6167,418.61,N1 Standard Instance Core,asia-south1
+Compute Engine,9.1084,391.53,N1 Standard Instance Core,asia-south1
+Cloud Storage,0.5412,361.46,Standard Storage US Multi-Region,us-central1
+Cloud Storage,4.6904,121.24,Standard Storage US Multi-Region,us-central1
+Cloud Functions,1.2519,229.82,Invocations,asia-south1
+Cloud Storage,2.6609,382.2,Standard Storage US Multi-Region,europe-west1
+Cloud Functions,2.9303,43.16,Invocations,us-central1
+Compute Engine,2.2666,253.66,N1 Standard Instance Core,asia-south1
+Cloud Functions,0.4418,59.88,Invocations,europe-west1
+Cloud Functions,3.8269,143.94,Invocations,europe-west1
+Cloud Storage,4.0044,117.09,Standard Storage US Multi-Region,asia-south1
+Compute Engine,14.987,333.18,N1 Standard Instance Core,us-central1
+Compute Engine,13.5877,228.43,N1 Standard Instance Core,us-central1
+Cloud Functions,3.1657,64.93,Invocations,asia-south1
+Cloud Functions,1.0983,468.09,Invocations,europe-west1
+Cloud Logging,1.1516,425.42,Log Volume,asia-south1
+Compute Engine,13.9102,50.46,N1 Standard Instance Core,us-central1
+Cloud Storage,3.9256,230.0,Standard Storage US Multi-Region,asia-south1
+Cloud Storage,4.3021,231.94,Standard Storage US Multi-Region,europe-west1
+Cloud Logging,4.4347,369.75,Log Volume,asia-south1
+Cloud Functions,1.5333,183.83,Invocations,us-central1
+Cloud Functions,3.8683,298.43,Invocations,europe-west1
+Cloud Storage,4.849,389.6,Standard Storage US Multi-Region,us-central1
+Compute Engine,6.8637,429.44,N1 Standard Instance Core,asia-south1
+Cloud Functions,0.5313,498.52,Invocations,asia-south1
+Cloud Logging,3.2749,437.63,Log Volume,us-central1
+Cloud Logging,5.414,259.91,Log Volume,asia-south1
+Cloud Logging,2.5394,463.46,Log Volume,europe-west1
+Cloud Storage,2.431,114.23,Standard Storage US Multi-Region,us-central1
+Cloud Logging,5.0252,222.26,Log Volume,europe-west1
+Cloud Functions,2.9458,276.94,Invocations,europe-west1
+Compute Engine,4.9073,16.38,N1 Standard Instance Core,europe-west1
+Cloud Logging,5.4042,374.56,Log Volume,asia-south1
+Cloud Storage,0.5054,243.84,Standard Storage US Multi-Region,asia-south1
+Cloud Functions,1.1412,166.45,Invocations,europe-west1
+Cloud Functions,1.8118,11.78,Invocations,europe-west1
+Cloud Storage,0.5629,373.65,Standard Storage US Multi-Region,europe-west1
+Cloud Functions,3.0739,136.0,Invocations,asia-south1
+Compute Engine,10.7936,490.12,N1 Standard Instance Core,us-central1
+Cloud Logging,2.4078,295.87,Log Volume,europe-west1
+Cloud Functions,0.6152,307.58,Invocations,asia-south1
+Cloud Storage,4.552,350.15,Standard Storage US Multi-Region,asia-south1
+Cloud SQL,913.63,654.59,Regional HA Instance Hours,europe-west1
