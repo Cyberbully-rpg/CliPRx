@@ -1,22 +1,20 @@
 """
-FastAPI Entry Point (Phase 1)
-Wires the DIPPA Data Ingestion, ML, and Output layers into a single execution pipeline.
+FastAPI Entry Point (Phase 1 + Phase 2)
+Wires the DIPPA Data Ingestion, ML, and Output layers into a single execution
+pipeline, plus the Phase 2 auth/upload/pipeline/reports endpoints (TRD 3).
 """
 import os
-import uuid
 from fastapi import Depends, FastAPI, Request, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 from dotenv import load_dotenv
 
+from api import pipeline as pipeline_router
+from api import reports as reports_router
+from api import upload as upload_router
 from api.auth import get_current_user
 from db.migrations.supabase_client import get_supabase_admin_client
-
-# Import Data Ingestion Parsers
-from parsers.aws_parser import parse_aws_csv
-from parsers.azure_parser import parse_azure_csv
-from parsers.gcp_parser import parse_gcp_csv
 
 # Import ML & Analytics Engines
 from ml.isolation_forest import run_anomaly_detection
@@ -27,6 +25,8 @@ from roi_ranker import calculate_roi_and_rank
 
 # Import Output Renderer
 from services.gemini_service import render_sprint_tickets
+from services.csv_ingest import enforce_upload_size, parse_by_provider
+from services.persistence import create_pending_report, finalize_report, mark_report_failed, persist_upload
 
 # Load environment variables (GEMINI_API_KEY)
 load_dotenv()
@@ -43,6 +43,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+app.include_router(upload_router.router)
+app.include_router(pipeline_router.router)
+app.include_router(reports_router.router)
 
 # TRD 9 Non-Functional Requirements: "API error format: JSON: {error, detail, code}.
 # All FastAPI exception handlers must follow this schema."
@@ -89,73 +93,6 @@ async def auth_me(user: dict = Depends(get_current_user)):
     return {"user_id": user["user_id"], "email": user["email"]}
 
 
-def _persist_upload(admin_client, user_id: str, provider: str, filename: str,
-                     file_bytes: bytes, df) -> str:
-    """Stores the raw CSV in Supabase Storage and records the upload (TRD 4.2)."""
-    upload_id = str(uuid.uuid4())
-    storage_path = f"{user_id}/{upload_id}/{filename}"
-
-    admin_client.storage.from_("cliprx-uploads").upload(
-        storage_path, file_bytes, {"content-type": "text/csv"}
-    )
-
-    admin_client.table("uploads").insert({
-        "id": upload_id,
-        "user_id": user_id,
-        "cloud_provider": provider,
-        "file_path": storage_path,
-        "file_size_bytes": len(file_bytes),
-        "service_count": int(df["service_name"].nunique()),
-    }).execute()
-
-    return upload_id
-
-
-def _persist_report(admin_client, user_id: str, upload_id: str, prescriptions: list) -> str:
-    """Records the report + its prescription rows (TRD 4.3, 4.4)."""
-    report_id = str(uuid.uuid4())
-
-    non_conflicted = [p for p in prescriptions if not p.get("is_conflicted", False)]
-    total_savings_min = sum(p["savings_min"] for p in non_conflicted)
-    total_savings_max = sum(p["savings_max"] for p in non_conflicted)
-    conflict_count = sum(1 for p in prescriptions if p.get("is_conflicted", False))
-
-    admin_client.table("reports").insert({
-        "id": report_id,
-        "user_id": user_id,
-        "upload_id": upload_id,
-        "status": "complete",
-        "total_savings_min": round(total_savings_min, 2),
-        "total_savings_max": round(total_savings_max, 2),
-        "prescription_count": len(prescriptions),
-        "conflict_count": conflict_count,
-    }).execute()
-
-    if prescriptions:
-        rows = [{
-            "report_id": report_id,
-            "service_name": p["service_name"],
-            "anomaly_score": p["anomaly_score"],
-            "pattern_id": p["pattern_id"],
-            "recommended_action": p["recommended_action"],
-            "savings_min": p["savings_min"],
-            "savings_max": p["savings_max"],
-            "engineering_hours": round(
-                (p["engineering_hours_min"] + p["engineering_hours_max"]) / 2, 2
-            ),
-            "risk_level": p["risk_level"],
-            "failure_cost_estimate": p["failure_cost_estimate"],
-            "roi_score": p["roi_score"],
-            "rank_position": p["rank_position"],
-            "is_conflicted": p["is_conflicted"],
-            "conflict_reason": p["conflict_reason"],
-            "tier": p["tier"],
-        } for p in prescriptions]
-        admin_client.table("prescriptions").insert(rows).execute()
-
-    return report_id
-
-
 @app.post("/api/v1/test-pipeline")
 async def run_core_pipeline(
     file: UploadFile = File(...),
@@ -163,47 +100,35 @@ async def run_core_pipeline(
     user: dict = Depends(get_current_user),
 ):
     """
-    Phase 1 End-to-End Test Endpoint.
-    Ingests a CSV, runs all 5 layers of the DIPPA framework in memory,
-    persists the upload/report/prescriptions (TRD 4), and returns the final
-    ranked DevOps sprint tickets.
+    Phase 1 End-to-End Test Endpoint. Ingests a CSV, runs all 5 layers of the
+    DIPPA framework in memory, persists the upload/report/prescriptions (TRD
+    4), and returns the final ranked DevOps sprint tickets -- all in one call.
+
+    This is the quick one-shot convenience path (no essential-services
+    declaration step); POST /upload/csv + POST /pipeline/run is the real,
+    TRD-documented multi-step flow, and shares all the same underlying
+    persistence/parsing helpers as this endpoint.
     """
+    report_id = None
+    admin_client = None
     try:
-        # 1. Read file bytes
         file_bytes = await file.read()
+        enforce_upload_size(file_bytes)
 
-        max_upload_mb = float(os.getenv("MAX_UPLOAD_SIZE_MB", 50))
-        max_upload_bytes = max_upload_mb * 1024 * 1024
-        if len(file_bytes) > max_upload_bytes:
-            raise HTTPException(
-                status_code=413,
-                detail=f"File exceeds the {max_upload_mb:.0f}MB upload limit."
-            )
-
-        # 2. Data Ingestion (Dynamic Routing)
         provider = cloud_provider.lower()
-        if provider == "aws":
-            df = parse_aws_csv(file_bytes)
-        elif provider == "azure":
-            df = parse_azure_csv(file_bytes)
-        elif provider == "gcp":
-            df = parse_gcp_csv(file_bytes)
-        else:
-            raise HTTPException(status_code=400, detail="Invalid cloud provider. Use aws, azure, or gcp.")
+        df = parse_by_provider(provider, file_bytes)
 
         admin_client = get_supabase_admin_client()
-        upload_id = _persist_upload(admin_client, user["user_id"], provider, file.filename, file_bytes, df)
+        upload_id = persist_upload(admin_client, user["user_id"], provider, file.filename, file_bytes, df)
+        report_id = create_pending_report(admin_client, user["user_id"], upload_id)
 
-        # 3. Intelligent Preprocessing & Predictive Modeling
-        # Get threshold from env or default to 0.65
         threshold = float(os.getenv("ANOMALY_THRESHOLD", 0.65))
         df_scored = run_anomaly_detection(df, threshold=threshold)
 
-        # 4. Performance Analytics (Pattern Matching)
         raw_prescriptions = match_patterns(df_scored, cloud_provider=provider, anomaly_threshold=threshold)
 
         if not raw_prescriptions:
-            report_id = _persist_report(admin_client, user["user_id"], upload_id, [])
+            finalize_report(admin_client, report_id, [])
             return {
                 "status": "success",
                 "upload_id": upload_id,
@@ -212,20 +137,13 @@ async def run_core_pipeline(
                 "data": []
             }
 
-        # 5. Risk Assessment
         usage_variance_flags = compute_usage_variance_flags(df_scored)
         risk_scored_prescriptions = apply_failure_scores(raw_prescriptions, usage_variance_flags)
-
-        # 6. Conflict Resolution
         resolved_prescriptions = resolve_conflicts(risk_scored_prescriptions)
-
-        # 7. ROI Ranking
         ranked_prescriptions = calculate_roi_and_rank(resolved_prescriptions)
-
-        # 8. Actionable Insights (Gemini LLM Rendering)
         final_prescriptions = render_sprint_tickets(ranked_prescriptions)
 
-        report_id = _persist_report(admin_client, user["user_id"], upload_id, final_prescriptions)
+        finalize_report(admin_client, report_id, final_prescriptions)
 
         return {
             "status": "success",
@@ -237,11 +155,19 @@ async def run_core_pipeline(
 
     except HTTPException:
         # Deliberately raised above (bad provider, oversized file, etc.) -- let it
-        # pass through as-is instead of being rewrapped into a 500 below.
+        # pass through as-is instead of being rewrapped into a 500 below. Only
+        # mark the report failed if it was actually created (a bad-provider/
+        # oversized-file error happens before create_pending_report runs).
+        if report_id and admin_client:
+            mark_report_failed(admin_client, report_id)
         raise
     except ValueError as ve:
         # Catches our specific parser errors (e.g., empty CSV)
+        if report_id and admin_client:
+            mark_report_failed(admin_client, report_id)
         raise HTTPException(status_code=400, detail=str(ve))
     except Exception as e:
         # Catches unexpected ML or pipeline crashes
+        if report_id and admin_client:
+            mark_report_failed(admin_client, report_id)
         raise HTTPException(status_code=500, detail=str(e))
