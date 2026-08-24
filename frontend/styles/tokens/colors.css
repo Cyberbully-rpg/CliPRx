@@ -1,0 +1,61 @@
+:root{
+/* ── Base palette ─────────────────────────────────────────── */
+/* Paper — the warm off-white the whole product sits on */
+--paper-50:#f8f8f4;--paper-100:#f4f4f0;--paper-200:#f0f0ec;--paper-300:#e8e8e4;--paper-400:#dbdbd9;--paper-500:#c9c9c4;
+
+/* Ink — warm-neutral greys for text and dark surfaces */
+--ink-900:#202020;--ink-800:#262626;--ink-700:#2c2c2c;--ink-600:#404040;--ink-500:#565654;--ink-400:#70706f;--ink-300:#8b8b87;--ink-200:#a0a09c;--ink-100:#c4c4c0;
+
+/* Sky — the pixel-art hero blue */
+--sky-700:#0f7bc4;--sky-600:#1888e8;--sky-500:#1c9bea;--sky-400:#24a4f8;--sky-300:#58c4f8;--sky-200:#8cd0ec;--sky-100:#b4e8f4;
+
+/* Grass / forest — pixel landscape greens, also the app chrome dark green */
+--forest-900:#202a1d;--forest-800:#313f2c;--forest-700:#3e6867;--forest-600:#4e8a3a;--grass-500:#83c858;--grass-400:#9cdd67;--grass-300:#a0e064;--grass-200:#c3ecA0;
+
+/* Sunflower — the mascot flower */
+--sun-600:#a26e2a;--sun-500:#e0b02a;--sun-400:#f0c838;--sun-300:#f7dc7a;
+
+/* Signal — status dots (sampled straight from the product) */
+--signal-running:#34d399;--signal-done:#a3e635;--signal-warn:#f0c838;--signal-error:#dc6a5a;
+
+/* ── Semantic aliases ─────────────────────────────────────── */
+--bg-page:var(--paper-100);
+--bg-page-alt:var(--paper-200);
+--surface-card:var(--paper-50);
+--surface-sunken:var(--paper-200);
+--surface-raised:#ffffff;
+--surface-dark:var(--ink-600);
+--surface-dark-deep:var(--forest-800);
+
+--text-heading:var(--ink-700);
+--text-body:var(--ink-700);
+--text-muted:var(--ink-300);
+--text-subtle:var(--ink-200);
+--text-on-dark:var(--paper-100);
+--text-on-dark-muted:rgba(244,244,240,.66);
+--text-on-image:#ffffff;
+--text-link:var(--ink-700);
+--text-link-hover:var(--ink-400);
+
+--border-hairline:var(--paper-300);
+--border-card:var(--paper-300);
+--border-dashed:var(--paper-400);
+--border-strong:var(--paper-500);
+--border-on-dark:rgba(255,255,255,.14);
+
+--accent-primary:var(--sky-500);
+--accent-on-primary:#ffffff;
+
+/* Glass — translucent panels that sit on top of pixel-art imagery */
+--glass-light-fill:rgba(255,255,255,.22);
+--glass-light-fill-strong:rgba(255,255,255,.32);
+--glass-light-border:rgba(255,255,255,.34);
+--glass-dark-fill:rgba(38,50,34,.52);
+--glass-dark-fill-strong:rgba(38,50,34,.68);
+--glass-dark-border:rgba(255,255,255,.16);
+--glass-blur:12px;
+
+/* Buttons */
+--btn-dark-top:#4a4a49;--btn-dark-bottom:#3a3a39;--btn-dark-edge:#565654;
+--btn-cream-bg:var(--paper-50);--btn-cream-bg-hover:#ffffff;
+}

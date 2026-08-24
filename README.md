@@ -9,16 +9,20 @@ Built on the **DIPPA framework** (Data Ingestion → Intelligent Preprocessing �
 Predictive Modeling → Performance Analytics → Actionable Insights), as specified in
 `CliPRx_PRD_v2.0_FullProduct.docx` and `CliPRx_TRD_v1.0.docx`.
 
-## Current status: Phase 1 only
+## Current status: Phase 1-3 complete
 
-This repo currently implements **Phase 1 (Core Pipeline)** from the project
-roadmap: multi-cloud CSV parsing, anomaly detection, pattern matching, risk
-scoring, conflict resolution, ROI ranking, and Gemini-rendered output — reachable
-through a single backend endpoint, with no UI yet.
+- **Phase 1 (Core Pipeline):** multi-cloud CSV parsing, anomaly detection, pattern
+  matching, risk scoring, conflict resolution, ROI ranking, and Gemini-rendered
+  output.
+- **Phase 2 (Auth + Persistence):** Supabase Auth (JWT verification via JWKS),
+  the full multi-step upload → declare tiers → run pipeline → reports flow, and
+  PDF export — all with row-level security and per-request ownership checks.
+- **Phase 3 (Frontend):** a Next.js app in `frontend/` — a marketing landing
+  page plus the authenticated dashboard (upload, tier declaration, pipeline run,
+  report list/detail, PDF download).
 
-**Not implemented yet:** authentication, database persistence, report history,
-PDF export, and the frontend (Phases 2-5 of the roadmap). See the TRD for the full
-intended scope.
+See `CLAUDE.md` for the full technical walkthrough of every stage and
+`docs/DEPLOYMENT.md` for deploying both halves (Render + Vercel, both free tier).
 
 ## Quick start
 
@@ -43,6 +47,15 @@ uvicorn main:app --reload
 Then `POST` a CSV to `http://localhost:8000/api/v1/test-pipeline` with
 `cloud_provider` set to `aws`, `azure`, or `gcp` (multipart form: `file` + `cloud_provider`).
 `GET /health` is a plain liveness check.
+
+To run the frontend against it:
+
+```bash
+cd frontend
+cp .env.local.example .env.local   # fill in your Supabase URL/anon key
+npm install
+npm run dev                        # http://localhost:3000
+```
 
 ## Generating sample data
 

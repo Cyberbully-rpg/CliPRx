@@ -1,0 +1,8 @@
+/* Cofounder webfonts.
+   SUBSTITUTION NOTICE: no font binaries were provided with the source screenshots.
+   The three families below are the closest Google Fonts matches to the type seen in
+   the product. Swap these for the real licensed files when they are available.
+     UI sans   — source looks like a geometric grotesque (Aeonik / Neue Montreal class)  -> Figtree
+     Wordmark  — high-contrast old-style serif, brand name only                          -> Cormorant Garamond
+     Mono      — light typewriter-grotesque mono, serifed i/l/I                           -> Roboto Mono */
+@import url("https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Roboto+Mono:wght@300..600&display=swap");

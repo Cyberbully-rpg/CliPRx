@@ -1,0 +1,12 @@
+:root{
+--radius-xs:6px;--radius-sm:8px;--radius-md:10px;--radius-lg:12px;--radius-xl:14px;--radius-2xl:18px;--radius-3xl:24px;--radius-full:999px;
+
+--radius-button:var(--radius-lg);
+--radius-input:var(--radius-lg);
+--radius-card:var(--radius-xl);
+--radius-card-lg:var(--radius-2xl);
+--radius-chip:var(--radius-md);
+--radius-node:var(--radius-md);
+--radius-glass:var(--radius-lg);
+--radius-panel:var(--radius-2xl);
+}
