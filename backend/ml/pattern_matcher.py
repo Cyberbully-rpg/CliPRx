@@ -67,6 +67,10 @@ PATTERN_ALLOWED_SERVICES = {
         'aws_cloudwatch_log_retention_001': {'amazoncloudwatch'},
         'aws_cloudtrail_duplicate_trails_001': {'awscloudtrail'},
         'aws_backup_retention_excess_001': {'awsbackup'},
+        'aws_lambda_graviton_001': {'awslambda'},
+        'aws_lambda_memory_overprovisioned_001': {'awslambda'},
+        'aws_fargate_spot_001': {'amazonecs'},
+        'aws_elasticache_rightsizing_001': {'amazonelasticache'},
     },
 }
 
@@ -153,6 +157,7 @@ def match_patterns(df: pd.DataFrame, cloud_provider: str, anomaly_threshold: flo
                         'engineering_hours_min': pattern['engineering_hours_min'],
                         'engineering_hours_max': pattern['engineering_hours_max'],
                         'downtime_risk': pattern['downtime_risk'],
+                        'complexity': pattern.get('complexity', 'Low'),
                         'immutable_blockers': pattern['immutable_blockers']
                     })
 

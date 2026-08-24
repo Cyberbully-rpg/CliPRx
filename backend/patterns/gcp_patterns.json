@@ -508,5 +508,90 @@
       "downtime_risk": "Low",
       "complexity": "Low",
       "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_spanner_capacity_rightsizing_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_spanner"
+      },
+      "recommended_action": "Right-size over-provisioned Spanner instances to match actual workload using granular processing units (below the 1-node/1000-PU minimum), or enable Spanner's managed autoscaler instead of static capacity.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Low",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_gcs_autoclass_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "cloud_storage"
+      },
+      "recommended_action": "Enable Cloud Storage Autoclass on buckets with unpredictable access patterns, so objects automatically transition between Standard, Nearline, and Archive based on actual access instead of relying on manual lifecycle rules.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.50,
+      "engineering_hours_min": 0.5,
+      "engineering_hours_max": 1.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "gcp_bigquery_partition_cluster_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "bigquery"
+      },
+      "recommended_action": "Add date/timestamp partitioning and clustering keys to large, frequently-queried on-demand BigQuery tables so queries scan only relevant partitions/blocks instead of the full table.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.45,
+      "engineering_hours_min": 4.0,
+      "engineering_hours_max": 10.0,
+      "downtime_risk": "Medium",
+      "complexity": "High",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_gke_spot_nodepool_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "kubernetes_engine"
+      },
+      "recommended_action": "Migrate fault-tolerant, interruption-tolerant GKE workloads (batch jobs, CI runners, dev/test) to a dedicated Spot VM node pool.",
+      "savings_range_min_pct": 0.60,
+      "savings_range_max_pct": 0.91,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "gcp_filestore_tier_rightsizing_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "filestore"
+      },
+      "recommended_action": "Downgrade over-provisioned Filestore instances from Regional/Enterprise to Zonal or Basic tier where cross-zone HA and enterprise management features aren't required; Filestore bills on provisioned capacity, not actual use.",
+      "savings_range_min_pct": 0.30,
+      "savings_range_max_pct": 0.55,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
     }
   ]

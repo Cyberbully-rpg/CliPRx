@@ -38,8 +38,14 @@ def calculate_roi_and_rank(prescriptions: list[dict]) -> list[dict]:
             risk_level = p.get('risk_level', 'High')
             multiplier = risk_multipliers.get(risk_level, 0.4)
 
-            # Core TRD ROI Formula
-            raw_roi = (monthly_savings / engineering_hours) * multiplier
+            # EMV-style confidence weighting (PMI PMBOK Expected Monetary Value:
+            # EMV = Probability x Impact): anomaly_score is the isolation forest's
+            # confidence that this row is genuinely anomalous, so a borderline match
+            # right at the threshold counts for less than a highly-confident one.
+            confidence = p.get('anomaly_score', 1.0)
+
+            # Core TRD ROI Formula, extended with EMV-style confidence weighting
+            raw_roi = (monthly_savings / engineering_hours) * multiplier * confidence
             p['roi_score'] = round(raw_roi, 4)
 
         # Sort the prescriptions: Primary sort by ROI, secondary sort by max savings to break ties

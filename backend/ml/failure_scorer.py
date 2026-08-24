@@ -26,9 +26,12 @@ def compute_usage_variance_flags(df: pd.DataFrame, cv_threshold: float = 1.0) ->
     return flags
 
 
-def calculate_risk(service_name: str, cost_usd: float, tier: int, high_usage_variance: bool = False) -> dict:
+def calculate_risk(service_name: str, cost_usd: float, tier: int, high_usage_variance: bool = False, action_complexity: str = "Low") -> dict:
     """
-    Applies TRD Section 5.4 rule-based heuristics to estimate failure risk.
+    Applies TRD Section 5.4 rule-based heuristics to estimate failure risk, extended
+    with an ITIL change-risk-assessment-style Likelihood signal (action complexity)
+    and a graded cost-impact band. Both extensions are additive only -- they can
+    promote Low -> Medium but never downgrade a result the TRD rules already set.
     """
     try:
         risk_level = "Low"
@@ -41,6 +44,18 @@ def calculate_risk(service_name: str, cost_usd: float, tier: int, high_usage_var
 
         # TRD Rule: Tier 2 (Immutable Core) carries inherently higher structural risk
         elif tier == 2:
+            risk_level = "Medium"
+
+        # ITIL change-risk extension: a High-complexity remediation carries elevated
+        # likelihood of execution failure independent of the underlying service's
+        # cost. Only ever promotes Low -> Medium, never downgrades an existing result.
+        if action_complexity == "High" and risk_level == "Low":
+            risk_level = "Medium"
+
+        # ITIL change-risk extension: graded cost-impact banding instead of a single
+        # binary cutoff, so a $15/mo item and a $499/mo item aren't both silently
+        # bucketed as identical "Low" impact. Only ever promotes Low -> Medium.
+        if 100.0 < cost_usd <= 500.0 and risk_level == "Low":
             risk_level = "Medium"
 
         # Calculate failure cost estimate for High risk items (TRD: 4x monthly cost)
@@ -68,8 +83,15 @@ def apply_failure_scores(prescriptions: list[dict], usage_variance_flags: dict =
             service_name=p['service_name'],
             cost_usd=p['cost_usd'],
             tier=p['tier'],
-            high_usage_variance=usage_variance_flags.get(p['service_name'], False)
+            high_usage_variance=usage_variance_flags.get(p['service_name'], False),
+            action_complexity=p.get('complexity', 'Low')
         )
+
+        # Persist the infra-only baseline (pre-reconciliation) so downstream stages
+        # (conflict_resolver.py) can compare an action's risk against the service's
+        # own baseline risk, rather than against the already-reconciled max below --
+        # which would always be >= the action's risk by construction.
+        p['infrastructure_risk_level'] = risk_data['risk_level']
 
         # The JSON pattern library also provided an inherent 'downtime_risk' for the action.
         pattern_risk = p.get('downtime_risk', 'Low')

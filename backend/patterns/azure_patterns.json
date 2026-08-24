@@ -508,5 +508,107 @@
       "downtime_risk": "Low",
       "complexity": "Low",
       "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_vm_hybrid_benefit_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "virtual_machines"
+      },
+      "recommended_action": "Apply Azure Hybrid Benefit to Windows Server VMs where the organization holds Software Assurance-covered on-premises licenses, converting pay-as-you-go compute rate to the base compute rate.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_sql_hybrid_benefit_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "sql_database"
+      },
+      "recommended_action": "Apply Azure Hybrid Benefit to SQL Database or SQL Managed Instance where the organization holds Software Assurance-covered SQL Server core licenses.",
+      "savings_range_min_pct": 0.15,
+      "savings_range_max_pct": 0.30,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1"]
+    },
+    {
+      "pattern_id": "azure_aks_spot_nodepool_001",
+      "service_type": "compute",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_kubernetes_service"
+      },
+      "recommended_action": "Migrate fault-tolerant, interruption-tolerant AKS workloads (batch jobs, CI runners, dev/test) to a dedicated Spot node pool.",
+      "savings_range_min_pct": 0.60,
+      "savings_range_max_pct": 0.85,
+      "engineering_hours_min": 3.0,
+      "engineering_hours_max": 8.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_redis_cache_rightsizing_001",
+      "service_type": "database",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "azure_cache_for_redis"
+      },
+      "recommended_action": "Right-size over-provisioned Azure Cache for Redis tiers/capacity based on actual memory and throughput utilization; consolidate underused cache instances.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 3.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_disk_ultra_iops_overprovisioned_001",
+      "service_type": "storage",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "storage"
+      },
+      "recommended_action": "Review Premium SSD v2 / Ultra Disk volumes provisioned with IOPS well above the 3,000 free baseline and reduce provisioned IOPS to match actual measured workload demand.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.35,
+      "engineering_hours_min": 1.0,
+      "engineering_hours_max": 2.0,
+      "downtime_risk": "Low",
+      "complexity": "Low",
+      "immutable_blockers": ["tier1", "tier2"]
+    },
+    {
+      "pattern_id": "azure_expressroute_underutilized_001",
+      "service_type": "networking",
+      "trigger_condition": {
+        "field": "service_name",
+        "operator": "equals",
+        "value": "expressroute"
+      },
+      "recommended_action": "Downgrade an underutilized ExpressRoute circuit to a lower bandwidth SKU, or consolidate multiple low-traffic circuits onto a shared connection.",
+      "savings_range_min_pct": 0.20,
+      "savings_range_max_pct": 0.40,
+      "engineering_hours_min": 2.0,
+      "engineering_hours_max": 4.0,
+      "downtime_risk": "Medium",
+      "complexity": "Medium",
+      "immutable_blockers": ["tier1", "tier2"]
     }
   ]

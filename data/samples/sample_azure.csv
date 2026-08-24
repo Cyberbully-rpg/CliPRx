@@ -1,132 +1,139 @@
 MeterCategory,Cost,Quantity,Meter,ResourceLocation
-Azure App Service,7.9481,331.17,Basic Plan,West Europe
-Azure Monitor,1.0592,416.9,Data Ingestion,Southeast Asia
-Azure Monitor,4.9911,53.53,Data Ingestion,Southeast Asia
-Virtual Machines,2.5956,52.6,B-Series Compute Hours,West Europe
-Virtual Machines,12.5511,77.49,B-Series Compute Hours,East US
-Virtual Machines,4.9997,388.93,B-Series Compute Hours,East US
-Azure Monitor,1.0926,458.09,Data Ingestion,Central India
-Azure Monitor,3.2068,300.2,Data Ingestion,Central India
-Storage,0.632,336.45,General Purpose v2 Transactions,Southeast Asia
-Azure Monitor,2.306,268.18,Data Ingestion,West Europe
-SQL Database,0.9088,308.54,Basic DTU,Southeast Asia
-Azure Monitor,4.0856,433.88,Data Ingestion,West Europe
-Storage,3.9194,321.6,General Purpose v2 Transactions,Central India
-Azure Monitor,4.8281,332.76,Data Ingestion,East US
-Virtual Machines,4.9999,72.79,B-Series Compute Hours,Central India
-SQL Database,7.5337,286.29,Basic DTU,West Europe
-Azure App Service,4.4873,144.88,Basic Plan,Central India
-SQL Database,3.346,343.19,Basic DTU,West Europe
-Azure Monitor,0.6367,278.04,Data Ingestion,Central India
-Azure App Service,8.7095,379.5,Basic Plan,East US
-SQL Database,7.7802,446.67,Basic DTU,West Europe
-SQL Database,2.8583,79.65,Basic DTU,West Europe
-SQL Database,2.7947,290.03,Basic DTU,East US
-SQL Database,4.9954,437.41,Basic DTU,East US
 Azure Monitor,1.4104,143.08,Data Ingestion,Central India
-Azure Monitor,0.7709,187.43,Data Ingestion,West Europe
-Azure Monitor,5.1089,21.04,Data Ingestion,Southeast Asia
-Azure Monitor,5.6487,219.51,Data Ingestion,East US
-Azure Monitor,1.5901,455.41,Data Ingestion,Central India
-Azure App Service,6.6963,144.79,Basic Plan,Southeast Asia
-Azure Monitor,3.6961,100.69,Data Ingestion,Southeast Asia
-Virtual Machines,9.9228,43.14,B-Series Compute Hours,Southeast Asia
-SQL Database,7.4585,386.28,Basic DTU,Central India
+Virtual Machines,4.9997,388.93,B-Series Compute Hours,East US
+Storage,455.06,981.03,Blob Storage Hot Tier,Southeast Asia
 SQL Database,0.8261,91.57,Basic DTU,Central India
-Azure Monitor,1.1706,294.54,Data Ingestion,Southeast Asia
-Storage,416.94,889.94,Premium SSD Managed Disks,West Europe
-Azure App Service,5.2399,283.05,Basic Plan,Southeast Asia
-Azure Monitor,1.7867,30.09,Data Ingestion,Central India
+Virtual Machines,4.6167,418.61,B-Series Compute Hours,Central India
+Azure App Service,7.6116,97.33,Basic Plan,East US
+SQL Database,3.346,343.19,Basic DTU,West Europe
+Azure App Service,2.2367,479.48,Basic Plan,Central India
+SQL Database,7.5337,286.29,Basic DTU,West Europe
+Azure App Service,8.3262,84.32,Basic Plan,West Europe
+Virtual Machines,13.5877,228.43,B-Series Compute Hours,East US
+Azure App Service,6.6963,144.79,Basic Plan,Southeast Asia
+Virtual Machines,12.5511,77.49,B-Series Compute Hours,East US
+Storage,2.5536,72.8,General Purpose v2 Transactions,Central India
+Azure Monitor,1.0926,458.09,Data Ingestion,Central India
+Azure App Service,2.1243,252.76,Basic Plan,East US
+Azure Monitor,4.1918,167.49,Data Ingestion,Central India
+Virtual Machines,0.6784,227.7,B-Series Compute Hours,Southeast Asia
+SQL Database,4.9954,437.41,Basic DTU,East US
+Azure Monitor,4.8281,332.76,Data Ingestion,East US
+Azure App Service,4.4873,144.88,Basic Plan,Central India
+Azure App Service,2.1889,307.58,Basic Plan,Central India
+SQL Database,1.8098,27.64,Basic DTU,East US
+Azure Monitor,4.7917,240.21,Data Ingestion,Central India
+SQL Database,7.7802,446.67,Basic DTU,West Europe
 Azure Monitor,3.7694,73.94,Data Ingestion,East US
-Storage,1.3144,119.09,General Purpose v2 Transactions,West Europe
-Virtual Machines,14.8062,359.16,B-Series Compute Hours,West Europe
-Storage,4.7494,458.26,General Purpose v2 Transactions,West Europe
-Azure App Service,6.6701,425.71,Basic Plan,Southeast Asia
-Azure Monitor,2.1148,331.3,Data Ingestion,West Europe
+Azure App Service,8.7095,379.5,Basic Plan,East US
+Virtual Machines,8.6918,286.64,B-Series Compute Hours,East US
 Azure App Service,2.0394,11.55,Basic Plan,East US
+SQL Database,5.2967,133.97,Basic DTU,West Europe
+Azure Monitor,4.0892,402.39,Data Ingestion,Central India
+Virtual Machines,1.8114,448.62,B-Series Compute Hours,Southeast Asia
+SQL Database,6.3955,64.93,Basic DTU,Central India
+Azure Monitor,5.7031,127.44,Data Ingestion,Central India
+Virtual Machines,703.88,137.13,D-Series VM Compute Hours,Southeast Asia
+Storage,3.9194,321.6,General Purpose v2 Transactions,Central India
+SQL Database,2.7947,290.03,Basic DTU,East US
+Azure Monitor,3.6961,100.69,Data Ingestion,Southeast Asia
+Azure App Service,5.2399,283.05,Basic Plan,Southeast Asia
+Virtual Machines,2.5956,52.6,B-Series Compute Hours,West Europe
+Virtual Machines,9.9228,43.14,B-Series Compute Hours,Southeast Asia
+Azure Monitor,1.7867,30.09,Data Ingestion,Central India
+SQL Database,0.6338,55.46,Basic DTU,Central India
+Azure App Service,7.1264,197.42,Basic Plan,Southeast Asia
+Azure App Service,7.9481,331.17,Basic Plan,West Europe
+SQL Database,1.9598,233.89,Basic DTU,Central India
+SQL Database,2.8583,79.65,Basic DTU,West Europe
+Azure Monitor,4.9911,53.53,Data Ingestion,Southeast Asia
+Azure Monitor,2.1148,331.3,Data Ingestion,West Europe
+Storage,0.2772,3.71,General Purpose v2 Transactions,Southeast Asia
+Azure App Service,728.97,187.87,Premium v3 Plan,East US
 Azure Monitor,3.0826,95.55,Data Ingestion,West Europe
 Virtual Machines,2.0355,71.03,B-Series Compute Hours,Southeast Asia
 Storage,1.1515,204.86,General Purpose v2 Transactions,West Europe
-Azure Monitor,5.7031,127.44,Data Ingestion,Central India
-Storage,455.06,981.03,Blob Storage Hot Tier,Southeast Asia
+Azure Monitor,0.7709,187.43,Data Ingestion,West Europe
+Azure Cache for Redis,509.93,666.77,Premium Tier Cache Hours,West Europe
 Storage,4.4912,70.98,General Purpose v2 Transactions,Central India
-SQL Database,5.2967,133.97,Basic DTU,West Europe
+Azure Monitor,2.306,268.18,Data Ingestion,West Europe
+Storage,0.632,336.45,General Purpose v2 Transactions,Southeast Asia
+Virtual Machines,4.9999,72.79,B-Series Compute Hours,Central India
 Virtual Machines,9.7034,277.24,B-Series Compute Hours,Central India
-Azure App Service,2.1243,252.76,Basic Plan,East US
-Virtual Machines,3.4349,347.7,B-Series Compute Hours,Southeast Asia
-Azure App Service,7.1264,197.42,Basic Plan,Southeast Asia
-Virtual Machines,7.4292,209.03,B-Series Compute Hours,East US
-Azure Monitor,5.1717,29.56,Data Ingestion,East US
-SQL Database,3.5943,187.72,Basic DTU,Southeast Asia
-Azure App Service,8.3262,84.32,Basic Plan,West Europe
-SQL Database,1.9598,233.89,Basic DTU,Central India
+SQL Database,913.63,654.59,vCore Provisioned Compute,West Europe
+SQL Database,1.2129,308.47,Basic DTU,Southeast Asia
+Azure Monitor,0.6367,278.04,Data Ingestion,Central India
+SQL Database,1.5091,268.5,Basic DTU,Central India
 Storage,1.5794,459.3,General Purpose v2 Transactions,West Europe
-Storage,2.5536,72.8,General Purpose v2 Transactions,Central India
-SQL Database,1.8098,27.64,Basic DTU,East US
+Virtual Machines,7.4292,209.03,B-Series Compute Hours,East US
 Virtual Machines,11.8665,332.49,B-Series Compute Hours,Southeast Asia
-Virtual Machines,9.2859,400.94,B-Series Compute Hours,East US
-Virtual Machines,12.1632,234.22,B-Series Compute Hours,Central India
+SQL Database,0.9088,308.54,Basic DTU,Southeast Asia
+Azure Monitor,4.0856,433.88,Data Ingestion,West Europe
 Azure App Service,4.9344,416.51,Basic Plan,Southeast Asia
-Azure App Service,2.2367,479.48,Basic Plan,Central India
+Virtual Machines,2.2361,59.43,B-Series Compute Hours,Central India
 Storage,0.7848,100.75,General Purpose v2 Transactions,Southeast Asia
 Virtual Machines,2.9736,462.63,B-Series Compute Hours,Southeast Asia
-Virtual Machines,0.6784,227.7,B-Series Compute Hours,Southeast Asia
+Azure Monitor,1.8246,72.37,Data Ingestion,East US
 Azure App Service,2.3886,341.84,Basic Plan,East US
-SQL Database,0.6338,55.46,Basic DTU,Central India
+Storage,1.3144,119.09,General Purpose v2 Transactions,West Europe
 Azure App Service,5.9913,32.84,Basic Plan,East US
-SQL Database,1.5091,268.5,Basic DTU,Central India
+Virtual Machines,12.1632,234.22,B-Series Compute Hours,Central India
+Storage,4.7494,458.26,General Purpose v2 Transactions,West Europe
 Virtual Machines,4.8638,244.8,B-Series Compute Hours,West Europe
-Virtual Machines,8.6918,286.64,B-Series Compute Hours,East US
-Azure Monitor,4.0892,402.39,Data Ingestion,Central India
+Azure App Service,5.7037,382.2,Basic Plan,West Europe
+SQL Database,3.5943,187.72,Basic DTU,Southeast Asia
+Virtual Machines,9.1084,391.53,B-Series Compute Hours,Central India
 Virtual Machines,4.8719,315.51,B-Series Compute Hours,West Europe
 Azure Monitor,0.7058,277.87,Data Ingestion,East US
-Azure Monitor,1.8246,72.37,Data Ingestion,East US
+Azure App Service,6.6701,425.71,Basic Plan,Southeast Asia
 SQL Database,1.7095,251.02,Basic DTU,West Europe
 Azure App Service,8.4681,404.32,Basic Plan,West Europe
 SQL Database,0.8121,247.5,Basic DTU,West Europe
-Virtual Machines,703.88,137.13,D-Series VM Compute Hours,Southeast Asia
+Azure Monitor,2.4078,295.87,Data Ingestion,Southeast Asia
 Azure Monitor,4.3298,223.63,Data Ingestion,East US
 Azure App Service,2.2582,58.15,Basic Plan,Southeast Asia
+ExpressRoute,444.53,532.94,Circuit Bandwidth Hours,Central India
 Azure Monitor,5.4646,489.81,Data Ingestion,Central India
-Virtual Machines,1.8114,448.62,B-Series Compute Hours,Southeast Asia
-Virtual Machines,2.2361,59.43,B-Series Compute Hours,Central India
+Virtual Machines,14.8062,359.16,B-Series Compute Hours,West Europe
+Azure Monitor,1.0592,416.9,Data Ingestion,Southeast Asia
 Azure Monitor,1.1806,463.85,Data Ingestion,East US
-SQL Database,5.434,209.89,Basic DTU,East US
-Azure Monitor,4.7917,240.21,Data Ingestion,Central India
+Azure Monitor,1.1516,425.42,Data Ingestion,Central India
+Azure Monitor,5.1089,21.04,Data Ingestion,Southeast Asia
 Storage,2.3019,136.85,General Purpose v2 Transactions,Southeast Asia
 Virtual Machines,1.8656,487.84,B-Series Compute Hours,Southeast Asia
 Azure Monitor,1.7631,66.78,Data Ingestion,East US
 Storage,3.0695,434.0,General Purpose v2 Transactions,Southeast Asia
 Storage,4.7969,241.67,General Purpose v2 Transactions,East US
-Azure App Service,728.97,187.87,Premium v3 Plan,East US
+Storage,4.552,350.15,General Purpose v2 Transactions,Central India
 Azure App Service,4.8888,314.03,Basic Plan,Southeast Asia
-SQL Database,1.2129,308.47,Basic DTU,Southeast Asia
+Virtual Machines,3.4349,347.7,B-Series Compute Hours,Southeast Asia
 Virtual Machines,1.1512,218.11,B-Series Compute Hours,East US
 Azure Monitor,1.8716,286.05,Data Ingestion,East US
 Azure Monitor,5.7409,146.17,Data Ingestion,West Europe
-Storage,0.2772,3.71,General Purpose v2 Transactions,Southeast Asia
+Virtual Machines,10.7936,490.12,B-Series Compute Hours,West Europe
 Azure Monitor,3.9742,379.29,Data Ingestion,Central India
-Azure App Service,7.6116,97.33,Basic Plan,East US
+Azure Kubernetes Service,620.54,599.12,Standard Node Pool Compute Hours,Central India
 Virtual Machines,10.0616,363.77,B-Series Compute Hours,West Europe
 Azure Monitor,5.8213,163.59,Data Ingestion,Southeast Asia
 SQL Database,2.8427,416.3,Basic DTU,Southeast Asia
-Azure Monitor,4.1918,167.49,Data Ingestion,Central India
-Virtual Machines,4.6167,418.61,B-Series Compute Hours,Central India
-Virtual Machines,9.1084,391.53,B-Series Compute Hours,Central India
+SQL Database,2.7152,229.82,Basic DTU,Central India
+SQL Database,7.4585,386.28,Basic DTU,Central India
+Azure Monitor,3.2068,300.2,Data Ingestion,Central India
+Storage,416.94,889.94,Premium SSD Managed Disks,West Europe
 Storage,0.5412,361.46,General Purpose v2 Transactions,East US
 Storage,4.6904,121.24,General Purpose v2 Transactions,West Europe
-SQL Database,2.7152,229.82,Basic DTU,Central India
-Azure App Service,5.7037,382.2,Basic Plan,West Europe
+Azure Monitor,1.5901,455.41,Data Ingestion,Central India
+Azure Monitor,5.6487,219.51,Data Ingestion,East US
 SQL Database,5.9429,43.16,Basic DTU,East US
+SQL Database,5.434,209.89,Basic DTU,East US
 Virtual Machines,2.2666,253.66,B-Series Compute Hours,Southeast Asia
 SQL Database,1.1574,59.88,Basic DTU,West Europe
 Azure App Service,9.6006,143.94,Basic Plan,Southeast Asia
 Storage,4.0044,117.09,General Purpose v2 Transactions,Central India
-Virtual Machines,14.987,333.18,B-Series Compute Hours,East US
-Virtual Machines,13.5877,228.43,B-Series Compute Hours,East US
-SQL Database,6.3955,64.93,Basic DTU,Central India
+Virtual Machines,9.2859,400.94,B-Series Compute Hours,East US
+Azure Monitor,1.1706,294.54,Data Ingestion,Southeast Asia
 SQL Database,2.4197,468.09,Basic DTU,Southeast Asia
-Azure Monitor,1.1516,425.42,Data Ingestion,Central India
+Azure Monitor,5.1717,29.56,Data Ingestion,East US
 Virtual Machines,13.9102,50.46,B-Series Compute Hours,East US
 Azure App Service,8.0266,230.0,Basic Plan,Southeast Asia
 Storage,4.3021,231.94,General Purpose v2 Transactions,Southeast Asia
@@ -134,6 +141,7 @@ Azure Monitor,4.4347,369.75,Data Ingestion,Central India
 SQL Database,3.2563,183.83,Basic DTU,East US
 SQL Database,7.7467,298.43,Basic DTU,West Europe
 Azure App Service,9.7226,389.6,Basic Plan,West Europe
+Virtual Machines,14.987,333.18,B-Series Compute Hours,East US
 Virtual Machines,6.8637,429.44,B-Series Compute Hours,Central India
 SQL Database,1.3294,498.52,Basic DTU,Central India
 Azure Monitor,3.2749,437.63,Data Ingestion,West Europe
@@ -149,8 +157,3 @@ Azure App Service,3.4028,166.45,Basic Plan,West Europe
 Azure App Service,4.9502,11.78,Basic Plan,Southeast Asia
 Azure App Service,1.8502,373.65,Basic Plan,West Europe
 SQL Database,6.219,136.0,Basic DTU,Central India
-Virtual Machines,10.7936,490.12,B-Series Compute Hours,West Europe
-Azure Monitor,2.4078,295.87,Data Ingestion,Southeast Asia
-Azure App Service,2.1889,307.58,Basic Plan,Central India
-Storage,4.552,350.15,General Purpose v2 Transactions,Central India
-SQL Database,913.63,654.59,vCore Provisioned Compute,West Europe

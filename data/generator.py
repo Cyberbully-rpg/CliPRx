@@ -47,6 +47,9 @@ AWS_ANOMALIES = [
     ("AmazonDynamoDB", "ReadCapacityUnit-Hrs", (300.0, 600.0)),
     ("AmazonRedshift", "Node:ra3.xlplus", (700.0, 1100.0)),
     ("AmazonEC2", "ElasticIP:IdleAddress", (50.0, 150.0)),
+    ("AmazonElastiCache", "NodeUsage:cache.r5.xlarge", (400.0, 800.0)),
+    ("AmazonEFS", "TimedStorage-ByteHrs", (300.0, 600.0)),
+    ("AmazonECS", "Fargate-vCPU-Hours:perCPU", (500.0, 900.0)),
 ]
 
 AZURE_NOISE = [
@@ -62,6 +65,9 @@ AZURE_ANOMALIES = [
     ("Storage", "Blob Storage Hot Tier", (400.0, 700.0)),
     ("SQL Database", "vCore Provisioned Compute", (600.0, 1000.0)),
     ("Azure App Service", "Premium v3 Plan", (500.0, 900.0)),
+    ("Azure Kubernetes Service", "Standard Node Pool Compute Hours", (500.0, 900.0)),
+    ("Azure Cache for Redis", "Premium Tier Cache Hours", (300.0, 600.0)),
+    ("ExpressRoute", "Circuit Bandwidth Hours", (400.0, 700.0)),
 ]
 
 GCP_NOISE = [
@@ -76,6 +82,9 @@ GCP_ANOMALIES = [
     ("Cloud Storage", "Standard Storage US Multi-Region", (400.0, 700.0)),
     ("Cloud SQL", "Regional HA Instance Hours", (600.0, 1000.0)),
     ("BigQuery", "Analysis On Demand", (700.0, 1300.0)),
+    ("Kubernetes Engine", "Standard Node Pool Compute Hours", (500.0, 900.0)),
+    ("Cloud Spanner", "Node Compute Hours", (600.0, 1100.0)),
+    ("Filestore", "Enterprise Tier Provisioned Capacity", (300.0, 600.0)),
 ]
 
 
