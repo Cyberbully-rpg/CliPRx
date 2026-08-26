@@ -22,6 +22,11 @@ export default function Reveal({ as = "div", className = "", id, style, children
       ([entry]) => {
         if (entry.isIntersecting) {
           el.classList.add("visible");
+          // .stagger's children are revealed by .stagger.visible, a class on
+          // the stagger div itself -- not inherited from the ancestor .reveal
+          // section this observer tracks. Mark any nested stagger groups too,
+          // or their content stays at opacity:0 forever.
+          el.querySelectorAll(".stagger").forEach((stagger) => stagger.classList.add("visible"));
           observer.unobserve(el);
         }
       },
