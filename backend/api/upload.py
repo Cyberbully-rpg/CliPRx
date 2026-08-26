@@ -1,7 +1,7 @@
 """
 Upload Endpoints (TRD 3.2)
 """
-from fastapi import APIRouter, Depends, File, Form, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 
 from api.auth import get_current_user
 from db.migrations.supabase_client import get_supabase_admin_client
@@ -29,7 +29,13 @@ async def upload_csv(
     enforce_upload_size(file_bytes)
 
     provider = cloud_provider.lower()
-    df = parse_by_provider(provider, file_bytes)
+    try:
+        df = parse_by_provider(provider, file_bytes)
+    except ValueError as ve:
+        # Bad/unrecognized CSV schema, empty file, etc. -- a client error, not a
+        # server crash. Letting this fall through to the generic 500 handler
+        # would also lose CORS headers (see main.py's unhandled_exception_handler).
+        raise HTTPException(status_code=400, detail=str(ve))
 
     admin_client = get_supabase_admin_client()
     upload_id = persist_upload(admin_client, user["user_id"], provider, file.filename, file_bytes, df)

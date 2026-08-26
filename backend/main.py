@@ -75,10 +75,24 @@ async def http_exception_handler(request: Request, exc: StarletteHTTPException):
 
 @app.exception_handler(Exception)
 async def unhandled_exception_handler(request: Request, exc: Exception):
-    return JSONResponse(
+    # Starlette runs the base-Exception handler in ServerErrorMiddleware, which
+    # sits OUTSIDE CORSMiddleware -- so responses from here never get CORS
+    # headers applied automatically (unlike HTTPException responses, which do
+    # pass through CORSMiddleware). Without this, any unhandled exception on a
+    # route looks like a network failure ("Failed to fetch") in the browser
+    # instead of a readable error, because the response is missing
+    # Access-Control-Allow-Origin. Reflect the request's Origin manually,
+    # matching CORSMiddleware's own behavior for allow_credentials=True.
+    response = JSONResponse(
         status_code=500,
         content={"error": "internal_server_error", "detail": str(exc), "code": 500},
     )
+    origin = request.headers.get("origin")
+    if origin and ("*" in allowed_origins or origin in allowed_origins):
+        response.headers["Access-Control-Allow-Origin"] = origin
+        response.headers["Access-Control-Allow-Credentials"] = "true"
+        response.headers["Vary"] = "Origin"
+    return response
 
 
 @app.get("/health")
