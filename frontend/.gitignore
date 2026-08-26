@@ -7,3 +7,6 @@ build/
 next-env.d.ts
 npm-debug.log*
 .vercel
+
+.vercel
+.env*
