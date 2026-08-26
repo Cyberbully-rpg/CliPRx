@@ -24,7 +24,18 @@ def parse_aws_csv(file_content: bytes) -> pd.DataFrame:
             'region': 'region'
         }
 
+        original_columns = set(df.columns)
         df = df.rename(columns=col_map)
+
+        if not (set(col_map.keys()) & original_columns):
+            raise ValueError(
+                "No recognizable AWS billing columns found. Expected an AWS Cost "
+                "Explorer export with columns like 'Service', 'UnblendedCost', "
+                "'UsageQuantity', 'UsageType', 'Region' -- got: "
+                f"{', '.join(sorted(original_columns)) or '(no columns)'}. "
+                "This looks like a different export format (e.g. FOCUS, a raw CUR "
+                "file, or another cloud provider)."
+            )
 
         required_string_cols = ['service_name', 'usage_type', 'region']
         for col in required_string_cols:
@@ -82,5 +93,7 @@ def parse_aws_csv(file_content: bytes) -> pd.DataFrame:
 
     except pd.errors.EmptyDataError:
         raise ValueError("The uploaded AWS CSV file is empty.")
+    except ValueError:
+        raise
     except Exception as e:
         raise RuntimeError(f"Failed to parse AWS CSV: {str(e)}")

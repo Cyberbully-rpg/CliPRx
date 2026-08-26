@@ -27,8 +27,20 @@ def parse_gcp_csv(file_content: bytes) -> pd.DataFrame:
             'region': 'region'
         }
         
+        original_columns = set(df.columns)
         df = df.rename(columns=lambda x: col_map.get(x, x))
         df = df.loc[:, ~df.columns.duplicated()]
+
+        if not (set(col_map.keys()) & original_columns):
+            raise ValueError(
+                "No recognizable GCP billing columns found. Expected a GCP "
+                "Billing export with columns like 'Service.description'/"
+                "'Description', 'Cost', 'Usage.amount'/'Usage', 'Usage.unit', "
+                "'Location.region'/'Region' -- got: "
+                f"{', '.join(sorted(original_columns)) or '(no columns)'}. "
+                "This looks like a different export format (e.g. FOCUS, a raw "
+                "billing file, or another cloud provider)."
+            )
 
         required_string_cols = ['service_name', 'usage_type', 'region']
         for col in required_string_cols:
@@ -84,6 +96,8 @@ def parse_gcp_csv(file_content: bytes) -> pd.DataFrame:
 
     except pd.errors.EmptyDataError:
         raise ValueError("The uploaded GCP CSV file is empty.")
+    except ValueError:
+        raise
     except Exception as e:
         raise RuntimeError(f"Failed to parse GCP CSV: {str(e)}")
         

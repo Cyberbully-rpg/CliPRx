@@ -26,8 +26,20 @@ def parse_azure_csv(file_content: bytes) -> pd.DataFrame:
             'resourcelocation': 'region'
         }
         
+        original_columns = set(df.columns)
         df = df.rename(columns=lambda x: col_map.get(x, x))
         df = df.loc[:, ~df.columns.duplicated()]
+
+        if not (set(col_map.keys()) & original_columns):
+            raise ValueError(
+                "No recognizable Azure billing columns found. Expected an Azure "
+                "Cost Management export with columns like 'MeterCategory', "
+                "'ConsumedService', 'Cost'/'CostInBillingCurrency', 'Quantity', "
+                "'Meter', 'ResourceLocation' -- got: "
+                f"{', '.join(sorted(original_columns)) or '(no columns)'}. "
+                "This looks like a different export format (e.g. FOCUS, a raw "
+                "billing file, or another cloud provider)."
+            )
 
         required_string_cols = ['service_name', 'usage_type', 'region']
         for col in required_string_cols:
@@ -83,5 +95,7 @@ def parse_azure_csv(file_content: bytes) -> pd.DataFrame:
 
     except pd.errors.EmptyDataError:
         raise ValueError("The uploaded Azure CSV file is empty.")
+    except ValueError:
+        raise
     except Exception as e:
         raise RuntimeError(f"Failed to parse Azure CSV: {str(e)}")
