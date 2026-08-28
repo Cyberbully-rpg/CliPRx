@@ -11,12 +11,22 @@ from ._column_utils import any_candidate_present, resolve_columns
 # service.description ("Compute Engine") is the real BigQuery billing export's
 # field name and is preferred over the generic "description" fallback (which
 # in a real export is a line-item-level description, not a service name).
+#
+# 'service name'/'usage quantity'/'usage unit'/'region/zone' and the cost
+# columns below are a third real-world GCP shape seen in the wild: a
+# spaced-header report/BI-tool export rather than the dotted BigQuery export
+# or the Billing Reports console's own field names. Its "Unrounded Cost ($)"
+# and "Rounded Cost ($)" are both USD -- deliberately preferred over the
+# unrounded value's extra precision -- but this same export also carries a
+# "Total Cost (INR)" column that must NEVER be treated as cost_usd: it's a
+# different currency, and mapping it in would silently overstate every cost
+# by roughly the USD/INR exchange rate (~80-90x) rather than fail loudly.
 COLUMN_PRIORITY = {
-    'service_name': ['service.description', 'description'],
-    'cost_usd': ['cost'],
-    'usage_quantity': ['usage.amount', 'usage'],
-    'usage_type': ['usage.unit'],
-    'region': ['location.region', 'region'],
+    'service_name': ['service.description', 'description', 'service name'],
+    'cost_usd': ['cost', 'unrounded cost ($)', 'rounded cost ($)'],
+    'usage_quantity': ['usage.amount', 'usage', 'usage quantity'],
+    'usage_type': ['usage.unit', 'usage unit'],
+    'region': ['location.region', 'region', 'region/zone'],
 }
 
 
