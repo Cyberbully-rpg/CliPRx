@@ -78,6 +78,15 @@ def match_patterns(df: pd.DataFrame, cloud_provider: str, anomaly_threshold: flo
     """
     Filters DataFrame for anomalies, loads the correct cloud pattern library,
     and returns a list of raw prescription dictionaries for matching conditions.
+
+    A FOCUS-derived DataFrame (parsers/focus_parser.py) carries an extra
+    `detected_provider` column, since FOCUS is provider-agnostic and a single
+    upload can (in principle) mix rows from different clouds. When present,
+    each provider's rows are matched against that provider's own pattern
+    library instead of the single `cloud_provider` passed in; rows whose
+    ProviderName didn't map to a known provider are skipped (no library to
+    match them against). Every non-FOCUS upload has no such column and hits
+    the original single-provider path unchanged.
     """
     try:
         # 1. Filter out normal traffic to save compute time
@@ -86,82 +95,93 @@ def match_patterns(df: pd.DataFrame, cloud_provider: str, anomaly_threshold: flo
         if anomalies.empty:
             return []
 
-        # 2. Resolve absolute path to the JSON pattern files
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        pattern_file = os.path.join(base_dir, '..', 'patterns', f"{cloud_provider.lower()}_patterns.json")
+        if 'detected_provider' in anomalies.columns:
+            raw_prescriptions = []
+            for provider in anomalies['detected_provider'].dropna().unique():
+                subset = anomalies[anomalies['detected_provider'] == provider]
+                raw_prescriptions.extend(_match_against_provider(subset, provider))
+            return raw_prescriptions
 
-        if not os.path.exists(pattern_file):
-            raise FileNotFoundError(f"Pattern library not found for provider: {cloud_provider}")
-
-        with open(pattern_file, 'r', encoding='utf-8') as f:
-            patterns = json.load(f)
-
-        category_map = SERVICE_CATEGORY_MAP.get(cloud_provider.lower(), {})
-        pattern_allowed_services = PATTERN_ALLOWED_SERVICES.get(cloud_provider.lower(), {})
-
-        raw_prescriptions = []
-
-        # 3. Evaluate each anomaly against the pattern library
-        for index, row in anomalies.iterrows():
-            for pattern in patterns:
-                condition = pattern.get('trigger_condition', {})
-                target_field = condition.get('field')
-                operator = condition.get('operator')
-                target_value = condition.get('value', '').lower()
-
-                # Ensure the field exists in our normalized DataFrame
-                if target_field not in row:
-                    continue
-
-                actual_value = str(row[target_field]).lower()
-                is_match = False
-
-                # Dynamic operator evaluation
-                if operator == 'equals' and actual_value == target_value:
-                    is_match = True
-                elif operator == 'contains' and target_value in actual_value:
-                    is_match = True
-
-                # When the trigger isn't already keyed on service_name, cross-check the
-                # row's actual service against what the pattern is meant for, so a
-                # usage_type substring coincidence can't produce a wrong-service
-                # recommendation. Unknown/uncatalogued services are let through as before.
-                if is_match and target_field != 'service_name':
-                    allowed_services = pattern_allowed_services.get(pattern.get('pattern_id'))
-                    if allowed_services is not None:
-                        # Exact, service-level allowlist (precise enough to tell RDS
-                        # apart from Redshift even though both are "database").
-                        if row['service_name'] not in allowed_services:
-                            is_match = False
-                    else:
-                        # Fallback for patterns/providers without an explicit
-                        # allowlist: broad category comparison.
-                        row_category = category_map.get(row['service_name'])
-                        if row_category is not None and row_category != pattern.get('service_type'):
-                            is_match = False
-
-                # If the logic triggers, build the raw prescription object
-                if is_match:
-                    savings_min = row['cost_usd'] * pattern['savings_range_min_pct']
-                    savings_max = row['cost_usd'] * pattern['savings_range_max_pct']
-
-                    raw_prescriptions.append({
-                        'service_name': row['service_name'],
-                        'tier': row['tier'],
-                        'anomaly_score': row['anomaly_score'],
-                        'cost_usd': row['cost_usd'],
-                        'pattern_id': pattern['pattern_id'],
-                        'recommended_action': pattern['recommended_action'],
-                        'savings_min': round(savings_min, 2),
-                        'savings_max': round(savings_max, 2),
-                        'engineering_hours_min': pattern['engineering_hours_min'],
-                        'engineering_hours_max': pattern['engineering_hours_max'],
-                        'downtime_risk': pattern['downtime_risk'],
-                        'complexity': pattern.get('complexity', 'Low'),
-                        'immutable_blockers': pattern['immutable_blockers']
-                    })
-
-        return raw_prescriptions
+        return _match_against_provider(anomalies, cloud_provider)
 
     except Exception as e:
         raise RuntimeError(f"Pattern matching engine failed: {str(e)}")
+
+
+def _match_against_provider(anomalies: pd.DataFrame, cloud_provider: str) -> list[dict]:
+    # Resolve absolute path to the JSON pattern file
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    pattern_file = os.path.join(base_dir, '..', 'patterns', f"{cloud_provider.lower()}_patterns.json")
+
+    if not os.path.exists(pattern_file):
+        raise FileNotFoundError(f"Pattern library not found for provider: {cloud_provider}")
+
+    with open(pattern_file, 'r', encoding='utf-8') as f:
+        patterns = json.load(f)
+
+    category_map = SERVICE_CATEGORY_MAP.get(cloud_provider.lower(), {})
+    pattern_allowed_services = PATTERN_ALLOWED_SERVICES.get(cloud_provider.lower(), {})
+
+    raw_prescriptions = []
+
+    # Evaluate each anomaly against the pattern library
+    for index, row in anomalies.iterrows():
+        for pattern in patterns:
+            condition = pattern.get('trigger_condition', {})
+            target_field = condition.get('field')
+            operator = condition.get('operator')
+            target_value = condition.get('value', '').lower()
+
+            # Ensure the field exists in our normalized DataFrame
+            if target_field not in row:
+                continue
+
+            actual_value = str(row[target_field]).lower()
+            is_match = False
+
+            # Dynamic operator evaluation
+            if operator == 'equals' and actual_value == target_value:
+                is_match = True
+            elif operator == 'contains' and target_value in actual_value:
+                is_match = True
+
+            # When the trigger isn't already keyed on service_name, cross-check the
+            # row's actual service against what the pattern is meant for, so a
+            # usage_type substring coincidence can't produce a wrong-service
+            # recommendation. Unknown/uncatalogued services are let through as before.
+            if is_match and target_field != 'service_name':
+                allowed_services = pattern_allowed_services.get(pattern.get('pattern_id'))
+                if allowed_services is not None:
+                    # Exact, service-level allowlist (precise enough to tell RDS
+                    # apart from Redshift even though both are "database").
+                    if row['service_name'] not in allowed_services:
+                        is_match = False
+                else:
+                    # Fallback for patterns/providers without an explicit
+                    # allowlist: broad category comparison.
+                    row_category = category_map.get(row['service_name'])
+                    if row_category is not None and row_category != pattern.get('service_type'):
+                        is_match = False
+
+            # If the logic triggers, build the raw prescription object
+            if is_match:
+                savings_min = row['cost_usd'] * pattern['savings_range_min_pct']
+                savings_max = row['cost_usd'] * pattern['savings_range_max_pct']
+
+                raw_prescriptions.append({
+                    'service_name': row['service_name'],
+                    'tier': row['tier'],
+                    'anomaly_score': row['anomaly_score'],
+                    'cost_usd': row['cost_usd'],
+                    'pattern_id': pattern['pattern_id'],
+                    'recommended_action': pattern['recommended_action'],
+                    'savings_min': round(savings_min, 2),
+                    'savings_max': round(savings_max, 2),
+                    'engineering_hours_min': pattern['engineering_hours_min'],
+                    'engineering_hours_max': pattern['engineering_hours_max'],
+                    'downtime_risk': pattern['downtime_risk'],
+                    'complexity': pattern.get('complexity', 'Low'),
+                    'immutable_blockers': pattern['immutable_blockers']
+                })
+
+    return raw_prescriptions

@@ -10,6 +10,7 @@ from fastapi import HTTPException
 
 from parsers.aws_parser import parse_aws_csv
 from parsers.azure_parser import parse_azure_csv
+from parsers.focus_parser import parse_focus_csv
 from parsers.gcp_parser import parse_gcp_csv
 
 
@@ -31,8 +32,10 @@ def parse_by_provider(provider: str, file_bytes: bytes) -> pd.DataFrame:
         return parse_azure_csv(file_bytes)
     elif provider == "gcp":
         return parse_gcp_csv(file_bytes)
+    elif provider == "focus":
+        return parse_focus_csv(file_bytes)
     else:
-        raise HTTPException(status_code=400, detail="Invalid cloud provider. Use aws, azure, or gcp.")
+        raise HTTPException(status_code=400, detail="Invalid cloud provider. Use aws, azure, gcp, or focus.")
 
 
 def fetch_upload_dataframe(admin_client, upload: dict) -> pd.DataFrame:
