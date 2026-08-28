@@ -6,6 +6,26 @@ import pandas as pd
 from io import BytesIO
 from datetime import datetime
 
+from ._column_utils import any_candidate_present, resolve_columns
+
+# MeterCategory ("Virtual Machines", "Storage") is preferred over
+# ConsumedService ("Microsoft.Compute", "Microsoft.Storage") for service_name:
+# it's what backend/patterns/azure_patterns.json's trigger_condition values
+# are actually written against (e.g. "virtual_machines"), and real exports
+# carry both columns together, so which one wins has to be a deliberate
+# choice, not whichever pandas keeps on a duplicate-column rename.
+# MeterName is the modern (Cost Management / MCA / EA) field for the specific
+# meter; "Meter" is the older Enterprise Reporting API's name for the same
+# concept, kept as a fallback for that legacy format.
+COLUMN_PRIORITY = {
+    'service_name': ['metercategory', 'consumedservice'],
+    'cost_usd': ['costinbillingcurrency', 'cost'],
+    'usage_quantity': ['quantity'],
+    'usage_type': ['metername', 'meter'],
+    'region': ['resourcelocation'],
+}
+
+
 def parse_azure_csv(file_content: bytes) -> pd.DataFrame:
     """
     Parses raw Azure Cost Management CSV bytes into a normalized DataFrame.
@@ -16,30 +36,19 @@ def parse_azure_csv(file_content: bytes) -> pd.DataFrame:
 
         df.columns = df.columns.str.lower().str.strip()
 
-        col_map = {
-            'metercategory': 'service_name',
-            'consumedservice': 'service_name', 
-            'cost': 'cost_usd',
-            'costinbillingcurrency': 'cost_usd', 
-            'quantity': 'usage_quantity',
-            'meter': 'usage_type',
-            'resourcelocation': 'region'
-        }
-        
         original_columns = set(df.columns)
-        df = df.rename(columns=lambda x: col_map.get(x, x))
-        df = df.loc[:, ~df.columns.duplicated()]
-
-        if not (set(col_map.keys()) & original_columns):
+        if not any_candidate_present(original_columns, COLUMN_PRIORITY):
             raise ValueError(
                 "No recognizable Azure billing columns found. Expected an Azure "
                 "Cost Management export with columns like 'MeterCategory', "
                 "'ConsumedService', 'Cost'/'CostInBillingCurrency', 'Quantity', "
-                "'Meter', 'ResourceLocation' -- got: "
+                "'MeterName'/'Meter', 'ResourceLocation' -- got: "
                 f"{', '.join(sorted(original_columns)) or '(no columns)'}. "
                 "This looks like a different export format (e.g. FOCUS, a raw "
                 "billing file, or another cloud provider)."
             )
+
+        df = resolve_columns(df, COLUMN_PRIORITY)
 
         required_string_cols = ['service_name', 'usage_type', 'region']
         for col in required_string_cols:

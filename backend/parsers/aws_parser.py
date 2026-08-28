@@ -6,36 +6,50 @@ import pandas as pd
 from io import BytesIO
 from datetime import datetime
 
+from ._column_utils import any_candidate_present, resolve_columns
+
+# Two real AWS export shapes are supported:
+#  - the simplified "Service,UnblendedCost,UsageQuantity,UsageType,Region"
+#    layout (Cost Explorer's own quick CSV download, and most tutorials/demos)
+#  - the actual AWS Cost and Usage Report (CUR), whose CSV columns are
+#    slash-delimited category/field pairs, e.g. "lineItem/UnblendedCost" --
+#    the format most real billing pipelines and FinOps tools ingest.
+# product/region (a clean region like "us-east-1") is preferred over
+# lineItem/AvailabilityZone (an AZ like "us-east-1a") for the region field,
+# since the latter would need suffix-stripping to be usable as a region.
+COLUMN_PRIORITY = {
+    'service_name': ['service', 'lineitem/productcode', 'product/productname'],
+    'cost_usd': ['unblendedcost', 'lineitem/unblendedcost'],
+    'usage_quantity': ['usagequantity', 'lineitem/usageamount'],
+    'usage_type': ['usagetype', 'lineitem/usagetype'],
+    'region': ['region', 'product/region'],
+}
+
+
 def parse_aws_csv(file_content: bytes) -> pd.DataFrame:
     """
-    Parses raw AWS Cost Explorer CSV bytes into a normalized DataFrame.
-    Returns the standard 8-column DataFrame required by the ML engine.
+    Parses raw AWS Cost Explorer or Cost and Usage Report (CUR) CSV bytes into
+    a normalized DataFrame. Returns the standard 8-column DataFrame required
+    by the ML engine.
     """
     try:
         df = pd.read_csv(BytesIO(file_content))
 
         df.columns = df.columns.str.lower().str.strip()
 
-        col_map = {
-            'service': 'service_name',
-            'unblendedcost': 'cost_usd',
-            'usagequantity': 'usage_quantity',
-            'usagetype': 'usage_type',
-            'region': 'region'
-        }
-
         original_columns = set(df.columns)
-        df = df.rename(columns=col_map)
-
-        if not (set(col_map.keys()) & original_columns):
+        if not any_candidate_present(original_columns, COLUMN_PRIORITY):
             raise ValueError(
                 "No recognizable AWS billing columns found. Expected an AWS Cost "
-                "Explorer export with columns like 'Service', 'UnblendedCost', "
-                "'UsageQuantity', 'UsageType', 'Region' -- got: "
-                f"{', '.join(sorted(original_columns)) or '(no columns)'}. "
-                "This looks like a different export format (e.g. FOCUS, a raw CUR "
-                "file, or another cloud provider)."
+                "Explorer export (columns like 'Service', 'UnblendedCost', "
+                "'UsageQuantity', 'UsageType', 'Region') or a Cost and Usage Report "
+                "(columns like 'lineItem/UnblendedCost', 'lineItem/UsageType') "
+                f"-- got: {', '.join(sorted(original_columns)) or '(no columns)'}. "
+                "This looks like a different export format (e.g. FOCUS, or another "
+                "cloud provider)."
             )
+
+        df = resolve_columns(df, COLUMN_PRIORITY)
 
         required_string_cols = ['service_name', 'usage_type', 'region']
         for col in required_string_cols:

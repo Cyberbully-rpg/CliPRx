@@ -6,6 +6,20 @@ import pandas as pd
 from io import BytesIO
 from datetime import datetime
 
+from ._column_utils import any_candidate_present, resolve_columns
+
+# service.description ("Compute Engine") is the real BigQuery billing export's
+# field name and is preferred over the generic "description" fallback (which
+# in a real export is a line-item-level description, not a service name).
+COLUMN_PRIORITY = {
+    'service_name': ['service.description', 'description'],
+    'cost_usd': ['cost'],
+    'usage_quantity': ['usage.amount', 'usage'],
+    'usage_type': ['usage.unit'],
+    'region': ['location.region', 'region'],
+}
+
+
 def parse_gcp_csv(file_content: bytes) -> pd.DataFrame:
     """
     Parses raw GCP Billing export CSV bytes into a normalized DataFrame.
@@ -16,22 +30,8 @@ def parse_gcp_csv(file_content: bytes) -> pd.DataFrame:
 
         df.columns = df.columns.str.lower().str.strip()
 
-        col_map = {
-            'service.description': 'service_name',
-            'description': 'service_name',
-            'cost': 'cost_usd',
-            'usage.amount': 'usage_quantity',
-            'usage': 'usage_quantity',
-            'usage.unit': 'usage_type',
-            'location.region': 'region',
-            'region': 'region'
-        }
-        
         original_columns = set(df.columns)
-        df = df.rename(columns=lambda x: col_map.get(x, x))
-        df = df.loc[:, ~df.columns.duplicated()]
-
-        if not (set(col_map.keys()) & original_columns):
+        if not any_candidate_present(original_columns, COLUMN_PRIORITY):
             raise ValueError(
                 "No recognizable GCP billing columns found. Expected a GCP "
                 "Billing export with columns like 'Service.description'/"
@@ -41,6 +41,8 @@ def parse_gcp_csv(file_content: bytes) -> pd.DataFrame:
                 "This looks like a different export format (e.g. FOCUS, a raw "
                 "billing file, or another cloud provider)."
             )
+
+        df = resolve_columns(df, COLUMN_PRIORITY)
 
         required_string_cols = ['service_name', 'usage_type', 'region']
         for col in required_string_cols:
