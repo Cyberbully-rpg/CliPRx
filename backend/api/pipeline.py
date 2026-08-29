@@ -75,7 +75,7 @@ async def run_pipeline(body: PipelineRunRequest, user: dict = Depends(get_curren
             risk_scored = apply_failure_scores(raw_prescriptions, usage_variance_flags)
             resolved = resolve_conflicts(risk_scored)
             ranked = calculate_roi_and_rank(resolved)
-            final_prescriptions = render_sprint_tickets(ranked)
+            final_prescriptions = await render_sprint_tickets(ranked)
         else:
             final_prescriptions = []
 

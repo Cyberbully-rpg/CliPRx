@@ -155,7 +155,7 @@ async def run_core_pipeline(
         risk_scored_prescriptions = apply_failure_scores(raw_prescriptions, usage_variance_flags)
         resolved_prescriptions = resolve_conflicts(risk_scored_prescriptions)
         ranked_prescriptions = calculate_roi_and_rank(resolved_prescriptions)
-        final_prescriptions = render_sprint_tickets(ranked_prescriptions)
+        final_prescriptions = await render_sprint_tickets(ranked_prescriptions)
 
         finalize_report(admin_client, report_id, final_prescriptions)
 

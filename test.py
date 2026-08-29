@@ -1,3 +1,4 @@
+import asyncio
 import os
 import sys
 from dotenv import load_dotenv
@@ -18,7 +19,7 @@ from backend.roi_ranker import calculate_roi_and_rank
 from backend.services.gemini_service import render_sprint_tickets
 
 
-def run_test():
+async def run_test():
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         print("❌ Error: GEMINI_API_KEY is missing from backend/.env")
@@ -43,9 +44,9 @@ AmazonEC2,450.00,1000.0,EBS:VolumeUsage.gp2,us-east-1,2026-03-01,2026-03-02,stan
     print("\n" + "=" * 60)
     print("STEP 7: Gemini Sprint Ticket Renderer")
     print("=" * 60)
-    tickets = render_sprint_tickets(ranked)
+    tickets = await render_sprint_tickets(ranked)
     print(tickets)
 
 
 if __name__ == "__main__":
-    run_test()
+    asyncio.run(run_test())
