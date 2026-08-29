@@ -43,7 +43,7 @@ export default function LandingPage() {
             <Button as="a" href="#sample" variant="cream" style={{ height: 36 }}>
               See a sample report
             </Button>
-            <Button as="a" href="/signup" variant="glass" style={{ height: 36 }}>
+            <Button as="a" href="/app" variant="glass" style={{ height: 36 }}>
               Upload your CSV
             </Button>
           </div>
@@ -221,7 +221,7 @@ export default function LandingPage() {
           <p style={{ margin: "20px auto 0", maxWidth: 400, fontSize: 16, lineHeight: 1.6, color: "rgba(255,255,255,.65)" }}>One CSV. A few seconds. A ranked plan.</p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginTop: 38 }}>
             <span className="glow-btn">
-              <Button as="a" href="/signup" variant="cream" style={{ height: 36 }}>Start now →</Button>
+              <Button as="a" href="/app" variant="cream" style={{ height: 36 }}>Start now →</Button>
             </span>
           </div>
           <Link href="#top" style={{ display: "inline-block", marginTop: 24, fontSize: 13, color: "rgba(255,255,255,.5)", borderBottom: "1px solid rgba(255,255,255,.2)", paddingBottom: 2 }}>

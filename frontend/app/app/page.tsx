@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useSession } from "@/lib/useSession";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react";
 import Sidebar from "@/components/dashboard/Sidebar";
 import UploadScreen from "@/components/dashboard/UploadScreen";
 import TiersScreen from "@/components/dashboard/TiersScreen";
@@ -33,9 +30,6 @@ function errMessage(e: unknown): string {
 }
 
 export default function AppDashboard() {
-  const router = useRouter();
-  const { session, loading: sessionLoading } = useSession();
-
   const [screen, setScreen] = useState<Screen>("upload");
 
   // upload
@@ -66,10 +60,6 @@ export default function AppDashboard() {
   const [detailError, setDetailError] = useState<string | null>(null);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
-
-  useEffect(() => {
-    if (!sessionLoading && !session) router.replace("/login");
-  }, [sessionLoading, session, router]);
 
   function resetUploadFlow() {
     setFile(null);
@@ -190,27 +180,12 @@ export default function AppDashboard() {
     }
   }
 
-  async function handleLogout() {
-    await supabase.auth.signOut();
-    router.replace("/login");
-  }
-
-  if (sessionLoading || !session) {
-    return (
-      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--text-muted)" }}>
-        Loading…
-      </div>
-    );
-  }
-
   return (
     <div className="d-shell">
       <Sidebar
         screen={screen}
         goUpload={resetUploadFlow}
         goReports={goReports}
-        userEmail={session.user.email}
-        onLogout={handleLogout}
       />
       <main className="d-main">
         {screen === "upload" && (

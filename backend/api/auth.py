@@ -32,8 +32,20 @@ def get_current_user(authorization: str = Header(default=None)) -> dict:
     FastAPI dependency: verifies the Supabase-issued JWT from the Authorization
     header and returns {"user_id": ..., "email": ...} extracted from its claims.
     Raises 401 on anything missing, malformed, expired, or badly signed.
+
+    Single-tenant mode: the login/signup UI was removed, so most requests now
+    arrive with no Authorization header at all. Rather than reject those, fall
+    back to a fixed DEFAULT_USER_ID -- a real Supabase Auth user created once
+    via the Admin API (see backend/.env.example), so uploads/reports' foreign
+    key to auth.users and existing RLS/ownership checks keep working unchanged.
+    A real Bearer token, if one is ever sent, still takes priority and is
+    verified exactly as before -- this doesn't remove multi-user capability,
+    it just stops requiring it.
     """
     if not authorization or not authorization.startswith("Bearer "):
+        default_user_id = os.getenv("DEFAULT_USER_ID")
+        if default_user_id:
+            return {"user_id": default_user_id, "email": "local@cliprx.app"}
         raise HTTPException(status_code=401, detail="Missing or malformed Authorization header")
 
     token = authorization[len("Bearer "):].strip()

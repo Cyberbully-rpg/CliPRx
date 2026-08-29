@@ -43,8 +43,8 @@ export default function Nav() {
             Docs
           </Link>
         </div>
-        <Link href="/login" className="nav-cta l-nav-cta">
-          Log in
+        <Link href="/app" className="nav-cta l-nav-cta">
+          Open app →
         </Link>
       </nav>
     </div>

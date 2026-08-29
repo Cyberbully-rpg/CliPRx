@@ -82,11 +82,15 @@ export class ApiError extends Error {
   }
 }
 
+// Single-tenant mode: there's no login/signup UI anymore, so there's usually
+// no Supabase session at all. The backend's DEFAULT_USER_ID fallback
+// (backend/api/auth.py) handles that -- omit the header rather than block
+// the request. If a session DOES exist (e.g. a leftover one from before this
+// change), still send it so nothing regresses for that case.
 async function authHeader(): Promise<Record<string, string>> {
   const { data } = await supabase.auth.getSession();
   const token = data.session?.access_token;
-  if (!token) throw new ApiError("Not signed in.", 401, "unauthorized");
-  return { Authorization: `Bearer ${token}` };
+  return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
 async function handleResponse<T>(res: Response): Promise<T> {

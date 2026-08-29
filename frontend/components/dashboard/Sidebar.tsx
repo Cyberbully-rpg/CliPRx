@@ -8,11 +8,9 @@ interface SidebarProps {
   screen: Screen;
   goUpload: () => void;
   goReports: () => void;
-  userEmail: string | undefined;
-  onLogout: () => void;
 }
 
-export default function Sidebar({ screen, goUpload, goReports, userEmail, onLogout }: SidebarProps) {
+export default function Sidebar({ screen, goUpload, goReports }: SidebarProps) {
   const isUpload = screen === "upload" || screen === "tiers" || screen === "pipeline";
   const isReports = screen === "reports" || screen === "detail";
 
@@ -47,25 +45,7 @@ export default function Sidebar({ screen, goUpload, goReports, userEmail, onLogo
       </button>
       <div style={{ flex: 1 }} />
       <div className="d-sidebar-foot">
-        <div style={{ fontSize: 12, color: "var(--text-subtle)", fontFamily: "var(--font-mono)" }}>
-          {userEmail || "…"}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--text-subtle)", marginTop: 4 }}>Single-tenant · SOC 2</div>
-        <button
-          onClick={onLogout}
-          style={{
-            marginTop: 10,
-            background: "none",
-            border: "none",
-            padding: 0,
-            cursor: "pointer",
-            fontSize: 12,
-            color: "var(--text-muted)",
-            fontFamily: "var(--font-sans)",
-          }}
-        >
-          Log out
-        </button>
+        <div style={{ fontSize: 11, color: "var(--text-subtle)" }}>Single-tenant · SOC 2</div>
       </div>
     </aside>
   );
