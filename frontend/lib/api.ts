@@ -2,7 +2,7 @@ import { supabase } from "./supabase";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
-export type CloudProvider = "aws" | "azure" | "gcp";
+export type CloudProvider = "aws" | "azure" | "gcp" | "focus";
 
 export interface ServiceRow {
   service_name: string;

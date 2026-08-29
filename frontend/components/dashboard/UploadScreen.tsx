@@ -19,6 +19,7 @@ const PROVIDERS: { key: CloudProvider; label: string }[] = [
   { key: "aws", label: "AWS" },
   { key: "azure", label: "Azure" },
   { key: "gcp", label: "GCP" },
+  { key: "focus", label: "FOCUS" },
 ];
 
 function formatSize(bytes: number): string {
@@ -57,7 +58,7 @@ export default function UploadScreen({ provider, setProvider, file, setFile, onC
           <line x1="12" y1="3" x2="12" y2="15" />
         </svg>
         <div style={{ fontSize: 16, fontWeight: 500, color: "var(--text-heading)" }}>Drop your CSV here</div>
-        <div style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 6 }}>or click to browse · AWS, Azure, GCP billing exports</div>
+        <div style={{ fontSize: 13, color: "var(--text-muted)", marginTop: 6 }}>or click to browse · AWS, Azure, GCP, or FOCUS billing exports</div>
       </div>
 
       <div style={{ marginTop: 24 }}>
