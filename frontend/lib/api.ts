@@ -1,5 +1,3 @@
-import { supabase } from "./supabase";
-
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
 
 export type CloudProvider = "aws" | "azure" | "gcp" | "focus";
@@ -65,6 +63,12 @@ export interface Prescription {
   is_conflicted: boolean;
   conflict_reason: string | null;
   tier: 1 | 2 | 3;
+  /**
+   * The Gemini-authored Jira-style ticket. Null on reports created before the
+   * column existed; equal to recommended_action when the renderer fell back to
+   * its plain-text stub (the UI hides the block in both cases).
+   */
+  sprint_ticket: string | null;
 }
 
 export interface ReportDetail extends ReportSummary {
@@ -82,15 +86,20 @@ export class ApiError extends Error {
   }
 }
 
-// Single-tenant mode: there's no login/signup UI anymore, so there's usually
-// no Supabase session at all. The backend's DEFAULT_USER_ID fallback
-// (backend/api/auth.py) handles that -- omit the header rather than block
-// the request. If a session DOES exist (e.g. a leftover one from before this
-// change), still send it so nothing regresses for that case.
+// Single-tenant mode: there is no login/signup UI, so the browser never holds a
+// Supabase session and every request goes out unauthenticated. The backend's
+// DEFAULT_USER_ID fallback (backend/api/auth.py) resolves those to a fixed
+// identity.
+//
+// This stays a function rather than an inlined `{}` because it is the one seam
+// multi-user auth would come back through: the backend still verifies a real
+// `Authorization: Bearer <jwt>` and prefers it over the fallback, so restoring
+// logins means returning a token here and nothing else in this file changes.
+// The Supabase browser client was removed with the auth screens -- it threw at
+// module load if NEXT_PUBLIC_SUPABASE_* were unset, taking down the whole
+// dashboard to guard a code path that always returned {}.
 async function authHeader(): Promise<Record<string, string>> {
-  const { data } = await supabase.auth.getSession();
-  const token = data.session?.access_token;
-  return token ? { Authorization: `Bearer ${token}` } : {};
+  return {};
 }
 
 async function handleResponse<T>(res: Response): Promise<T> {
