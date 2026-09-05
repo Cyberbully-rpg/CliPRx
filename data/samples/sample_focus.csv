@@ -1,0 +1,164 @@
+ProviderName,ServiceName,ChargeDescription,BilledCost,ConsumedQuantity,RegionId,BillingCurrency
+Microsoft Azure,Azure Monitor,Data ingestion,2.6311,611.37,westeurope,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.091,639.6,westeurope,USD
+AWS,Amazon Simple Queue Service,Requests,0.6141,480.08,us-west-2,USD
+Google Cloud,Compute Engine,N2 instance core hours,968.22,745.06,asia-south1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,4.794,94.57,eastus,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.0196,71.08,us-west-2,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.9425,335.47,westeurope,USD
+AWS,Amazon CloudFront,Data transfer out to internet,358.7,619.68,us-east-1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,5.4289,267.58,southeastasia,USD
+AWS,Amazon Simple Queue Service,Requests,1.981,718.79,eu-west-1,USD
+AWS,Amazon Simple Storage Service,"Timed storage, standard tier",769.92,217.16,eu-west-1,USD
+AWS,Amazon Simple Queue Service,Requests,2.6344,291.99,us-west-2,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.2851,126.93,us-east-1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,5.4122,119.08,eastus,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.2848,350.89,asia-south1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,1.4184,307.27,eastus,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,1.3229,442.84,asia-south1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.0774,748.98,europe-west1,USD
+Google Cloud,Cloud Storage,"Standard storage, multi-region",726.56,384.02,asia-south1,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.6766,301.71,westeurope,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.7276,574.49,southeastasia,USD
+AWS,Amazon SageMaker,"Notebook instance hours, ml.t3.xlarge",749.84,761.0,us-west-2,USD
+Microsoft Azure,Azure Monitor,Data ingestion,1.0196,680.58,eastus,USD
+AWS,Amazon Simple Queue Service,Requests,1.8116,510.02,us-east-1,USD
+AWS,Amazon Simple Queue Service,Requests,0.5751,471.02,us-east-1,USD
+AWS,Amazon Simple Queue Service,Requests,2.7639,549.19,us-west-2,USD
+Microsoft Azure,Azure Monitor,Data ingestion,0.9953,364.0,eastus,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.1586,660.49,westeurope,USD
+AWS,Amazon Simple Queue Service,Requests,3.7175,367.38,us-east-1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,2.4539,354.41,us-central1,USD
+Google Cloud,Cloud Spanner,Node compute hours,810.32,734.84,us-central1,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.3622,625.25,westeurope,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,1.865,797.63,us-central1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,3.5423,703.48,asia-south1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.6073,669.68,eastus,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,4.4885,86.03,europe-west1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,0.3796,532.88,asia-south1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,2.9894,520.45,europe-west1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.2557,717.73,eastus,USD
+Microsoft Azure,Azure Monitor,Data ingestion,4.6073,24.17,eastus,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.8798,115.27,us-east-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.4149,621.64,eu-west-1,USD
+Oracle Cloud Infrastructure,Oracle Autonomous Database,OCPU hours,635.43,728.6,us-ashburn-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.7966,525.36,asia-south1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,1.4031,5.34,us-east-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.0797,42.27,asia-south1,USD
+AWS,Amazon Simple Queue Service,Requests,1.84,641.38,us-west-2,USD
+Google Cloud,Cloud Logging,Log volume ingested,2.0858,191.6,us-central1,USD
+AWS,Amazon Simple Queue Service,Requests,3.1572,46.73,eu-west-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.6362,640.97,eu-west-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.658,617.91,asia-south1,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.5995,558.8,asia-south1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,1.3023,33.08,asia-south1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,0.8907,162.22,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.2169,404.12,eastus,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.6445,596.41,westeurope,USD
+Google Cloud,Cloud Logging,Log volume ingested,4.5644,681.05,europe-west1,USD
+AWS,Amazon Simple Queue Service,Requests,1.8775,125.02,eu-west-1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,5.4972,155.24,southeastasia,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,4.844,217.34,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,0.955,784.18,southeastasia,USD
+Microsoft Azure,SQL Database,vCore general purpose,767.65,489.62,westeurope,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.9339,493.43,eastus,USD
+Microsoft Azure,Azure Monitor,Data ingestion,1.149,34.84,eastus,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.5447,567.95,asia-south1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.5381,139.33,europe-west1,USD
+AWS,Amazon Simple Queue Service,Requests,3.3413,147.64,us-east-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,1.5521,784.04,us-west-2,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.7988,627.48,us-west-2,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,0.4799,509.49,asia-south1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.9666,116.96,westeurope,USD
+Google Cloud,Cloud Logging,Log volume ingested,4.8281,756.87,europe-west1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,2.8765,462.84,eastus,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,4.7739,560.12,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.1164,752.53,westeurope,USD
+AWS,Amazon Simple Queue Service,Requests,0.9849,119.6,us-west-2,USD
+AWS,Amazon Simple Queue Service,Requests,2.5754,323.82,us-west-2,USD
+Google Cloud,BigQuery,"Analysis slots, on-demand",821.74,379.86,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,4.9454,108.14,eastus,USD
+Microsoft Azure,Azure Monitor,Data ingestion,2.3236,223.18,eastus,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,4.4801,342.89,us-central1,USD
+Google Cloud,Cloud Logging,Log volume ingested,4.8234,489.18,europe-west1,USD
+AWS,Amazon Simple Queue Service,Requests,1.7969,330.04,us-west-2,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.9437,327.62,eu-west-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.1806,471.06,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,5.8305,254.32,southeastasia,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,3.5586,335.3,us-central1,USD
+AWS,Amazon Simple Queue Service,Requests,1.2854,379.83,us-east-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.5191,458.39,us-east-1,USD
+Microsoft Azure,Azure Kubernetes Service,Node pool compute hours,886.49,453.05,westeurope,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.2302,518.71,eu-west-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.2997,522.29,us-west-2,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.9502,630.16,us-central1,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.5705,439.77,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,2.7469,501.18,westeurope,USD
+AWS,Amazon Simple Queue Service,Requests,2.6929,289.17,eu-west-1,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.2227,589.63,westeurope,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.9306,709.24,eastus,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.5502,403.4,southeastasia,USD
+AWS,Amazon Simple Queue Service,Requests,0.4673,416.7,us-east-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.0188,252.25,eu-west-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.5053,670.07,us-west-2,USD
+Google Cloud,Cloud Logging,Log volume ingested,2.1828,93.57,europe-west1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,3.634,58.58,asia-south1,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.387,45.4,asia-south1,USD
+AWS,Amazon Simple Queue Service,Requests,3.6201,225.21,us-west-2,USD
+Microsoft Azure,Virtual Machines,D8s v3 compute hours,752.95,139.22,westeurope,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.2046,251.8,us-central1,USD
+AWS,Amazon Simple Queue Service,Requests,0.6978,12.73,eu-west-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.2223,661.91,asia-south1,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.6088,298.44,asia-south1,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.024,123.74,us-central1,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.8785,96.62,westeurope,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,0.7172,292.57,europe-west1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,1.7797,796.38,eu-west-1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.3176,617.91,westeurope,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.5988,550.44,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,4.7461,564.62,southeastasia,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,1.6093,513.07,europe-west1,USD
+AWS,Amazon Simple Queue Service,Requests,2.9172,9.57,eu-west-1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.6442,420.55,eastus,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.8577,131.84,southeastasia,USD
+Microsoft Azure,Storage,Premium SSD managed disks,463.15,669.21,eastus,USD
+Microsoft Azure,Azure Monitor,Data ingestion,4.9771,791.32,southeastasia,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.1766,671.42,europe-west1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,1.6802,792.27,westeurope,USD
+AWS,Amazon Simple Queue Service,Requests,1.3103,359.15,us-east-1,USD
+AWS,Amazon Simple Queue Service,Requests,1.2759,314.67,us-east-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.8388,604.51,us-central1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,1.7091,347.59,us-west-2,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,2.6905,121.39,europe-west1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.6935,145.56,eastus,USD
+Google Cloud,Cloud Logging,Log volume ingested,4.6695,36.67,asia-south1,USD
+AWS,Amazon Elastic File System,"Timed storage, standard tier",490.19,187.05,us-east-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.2714,392.67,us-central1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,3.7933,469.57,asia-south1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.1411,68.21,westeurope,USD
+Microsoft Azure,Azure Monitor,Data ingestion,5.6525,195.69,southeastasia,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.2665,510.43,southeastasia,USD
+Microsoft Azure,Azure Monitor,Data ingestion,1.5421,519.67,westeurope,USD
+AWS,Amazon Simple Queue Service,Requests,1.2737,610.56,eu-west-1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.2604,47.43,southeastasia,USD
+Google Cloud,Cloud Logging,Log volume ingested,2.292,432.08,europe-west1,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.9157,271.43,southeastasia,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.3584,386.58,eu-west-1,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.5863,615.13,southeastasia,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.0252,404.33,asia-south1,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,1.9798,727.73,us-central1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.3545,680.37,us-west-2,USD
+Microsoft Azure,Azure DNS,Hosted zone,0.3656,273.13,westeurope,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.3999,425.6,us-west-2,USD
+Google Cloud,Cloud Pub/Sub,Message delivery,3.232,84.88,us-central1,USD
+Google Cloud,Cloud Logging,Log volume ingested,5.8659,733.95,europe-west1,USD
+Google Cloud,Cloud Logging,Log volume ingested,0.7289,505.03,europe-west1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,0.5947,271.75,us-east-1,USD
+Google Cloud,Cloud Logging,Log volume ingested,3.067,154.09,us-central1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,1.3486,742.04,eastus,USD
+Microsoft Azure,Azure DNS,Hosted zone,1.3773,359.12,westeurope,USD
+Microsoft Azure,Azure Monitor,Data ingestion,5.5972,479.18,eastus,USD
+Google Cloud,Cloud Logging,Log volume ingested,1.9973,6.84,europe-west1,USD
+AWS,Amazon Simple Queue Service,Requests,2.6717,562.72,us-east-1,USD
+AWS,Amazon Simple Notification Service,Notifications delivered,2.2083,507.38,eu-west-1,USD
+Microsoft Azure,Azure Monitor,Data ingestion,3.1872,496.67,southeastasia,USD
