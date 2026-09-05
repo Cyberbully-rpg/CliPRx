@@ -2,6 +2,8 @@
 PDF Report Generator (TRD 6: backend/services/pdf_service.py; PRD 6.8)
 Renders a persisted report + its prescriptions into a branded PDF using ReportLab.
 """
+import re
+from html import escape
 from io import BytesIO
 
 from reportlab.lib import colors
@@ -17,6 +19,36 @@ RISK_COLOR_HEX = {
     "Medium": "#ef6c00",
     "High": "#c62828",
 }
+
+
+def _render_ticket_markup(text: str) -> str:
+    """
+    Gemini returns the sprint ticket as free-form markdown-ish plain text, but
+    ReportLab's Paragraph parses its own mini-HTML -- so a stray "<" or "&" in
+    the model output raises a parse error and would break PDF generation for the
+    whole report. Escape everything first, then re-introduce only the two bits of
+    formatting worth keeping: **bold** and line breaks.
+    """
+    safe = escape(text or "", quote=False)
+    safe = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", safe, flags=re.DOTALL)
+    # Collapse the blank line between markdown blocks so sections don't drift apart.
+    safe = re.sub(r"\n{2,}", "\n", safe).strip()
+    return safe.replace("\n", "<br/>")
+
+
+def _is_ticket_fallback(ticket: str, recommended_action: str) -> bool:
+    """
+    True when the stored ticket carries no more information than the
+    recommended_action printed directly above it, in which case rendering the
+    block just says the same thing twice. Two ways that happens:
+      * the row predates the sprint_ticket column, so finalize_report() stored
+        the recommended_action verbatim; or
+      * gemini_service fell back on an API failure (a 429 on the free tier is
+        routine), which stores "Execute action: {recommended_action}".
+    Keep the prefix in sync with gemini_service.render_sprint_tickets().
+    """
+    action = (recommended_action or "").strip()
+    return ticket == action or ticket == f"Execute action: {action}"
 
 
 def _format_created_at(raw: str) -> str:
@@ -47,6 +79,15 @@ def generate_report_pdf(report: dict, prescriptions: list, cloud_provider: str =
     h2_style = ParagraphStyle("H2", parent=styles["Heading2"], spaceBefore=14, spaceAfter=6)
     body_style = styles["Normal"]
     action_style = ParagraphStyle("Action", parent=styles["Normal"], spaceBefore=2, spaceAfter=4)
+    ticket_style = ParagraphStyle(
+        "Ticket", parent=styles["Normal"], fontSize=9, leading=12,
+        leftIndent=8, spaceBefore=4, spaceAfter=6,
+        borderPadding=0, textColor=colors.HexColor("#333333"),
+    )
+    ticket_label_style = ParagraphStyle(
+        "TicketLabel", parent=styles["Normal"], fontSize=8, spaceBefore=6,
+        textColor=colors.grey,
+    )
 
     elements = []
 
@@ -93,7 +134,14 @@ def generate_report_pdf(report: dict, prescriptions: list, cloud_provider: str =
                 ))
                 elements.append(Spacer(1, 4))
 
-            elements.append(Paragraph(p["recommended_action"], action_style))
+            elements.append(Paragraph(escape(p["recommended_action"], quote=False), action_style))
+
+            # The Gemini-authored sprint ticket (pipeline stage 7) -- the actual
+            # deliverable an engineer picks up.
+            ticket = (p.get("sprint_ticket") or "").strip()
+            if ticket and not _is_ticket_fallback(ticket, p["recommended_action"]):
+                elements.append(Paragraph("SPRINT TICKET", ticket_label_style))
+                elements.append(Paragraph(_render_ticket_markup(ticket), ticket_style))
 
             risk = p.get("risk_level", "Low")
             risk_hex = RISK_COLOR_HEX.get(risk, "#000000")

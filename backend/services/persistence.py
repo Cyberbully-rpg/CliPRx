@@ -85,6 +85,12 @@ def finalize_report(admin_client, report_id: str, prescriptions: list) -> None:
             "is_conflicted": p["is_conflicted"],
             "conflict_reason": p["conflict_reason"],
             "tier": p["tier"],
+            # The Gemini-authored ticket (pipeline stage 7). Falls back to the
+            # raw recommended_action if the renderer never ran -- gemini_service
+            # already substitutes its own plain-text stub on API failure, so a
+            # missing key here means the stage was skipped entirely, not that
+            # Gemini errored.
+            "sprint_ticket": p.get("sprint_ticket") or p["recommended_action"],
         } for p in prescriptions]
         admin_client.table("prescriptions").insert(rows).execute()
 
