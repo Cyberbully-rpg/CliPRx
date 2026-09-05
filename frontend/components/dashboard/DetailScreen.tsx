@@ -33,6 +33,20 @@ function daysUntil(iso: string): number {
   return Math.max(0, Math.ceil((new Date(iso).getTime() - Date.now()) / (1000 * 60 * 60 * 24)));
 }
 
+/**
+ * Hide the ticket block when it carries nothing the recommended_action above it
+ * doesn't already say. That happens for rows predating the sprint_ticket column
+ * (stored as the action verbatim) and for rows where gemini_service fell back on
+ * an API failure (stored as "Execute action: {action}" — a 429 on the free tier
+ * is routine). Keep the prefix in sync with backend/services/gemini_service.py.
+ */
+function hasTicket(rx: Prescription): boolean {
+  const ticket = rx.sprint_ticket?.trim();
+  if (!ticket) return false;
+  const action = rx.recommended_action.trim();
+  return ticket !== action && ticket !== `Execute action: ${action}`;
+}
+
 function PrescriptionCard({ rx, index }: { rx: Prescription; index: number }) {
   const badge = RISK_BADGE[rx.risk_level] ?? RISK_BADGE.Low;
   return (
@@ -62,6 +76,17 @@ function PrescriptionCard({ rx, index }: { rx: Prescription; index: number }) {
       </p>
       {rx.is_conflicted && rx.conflict_reason && (
         <p style={{ fontSize: 13, lineHeight: 1.5, color: "#a23c34", marginBottom: 12 }}>{rx.conflict_reason}</p>
+      )}
+      {hasTicket(rx) && (
+        <details className="rx-ticket">
+          <summary>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
+            Sprint ticket
+          </summary>
+          <pre>{rx.sprint_ticket}</pre>
+        </details>
       )}
       <div style={{ display: "flex", gap: 20, fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--text-muted)", flexWrap: "wrap" }}>
         <span>effort {rx.engineering_hours} eng-hrs</span>

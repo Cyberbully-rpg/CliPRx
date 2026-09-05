@@ -6,6 +6,8 @@ import type { ServiceRow } from "@/lib/api";
 
 interface TiersScreenProps {
   services: ServiceRow[];
+  /** Non-fatal parse notices from /upload/csv. Informational, not errors. */
+  warnings: string[];
   tiers: Record<string, 1 | 2 | 3>;
   setTier: (serviceName: string, tier: 1 | 2 | 3) => void;
   onBack: () => void;
@@ -14,7 +16,7 @@ interface TiersScreenProps {
   error: string | null;
 }
 
-export default function TiersScreen({ services, tiers, setTier, onBack, onRun, loading, error }: TiersScreenProps) {
+export default function TiersScreen({ services, warnings, tiers, setTier, onBack, onRun, loading, error }: TiersScreenProps) {
   const tier1Count = Object.values(tiers).filter((t) => t === 1).length;
 
   return (
@@ -25,6 +27,21 @@ export default function TiersScreen({ services, tiers, setTier, onBack, onRun, l
           Mark services as essential. Tier 1 = never touched. Tier 2 = flagged if touched. Tier 3 = flexible.
         </p>
       </div>
+
+      {warnings.length > 0 && (
+        <div className="d-notice" role="status">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="16" x2="12" y2="12" />
+            <line x1="12" y1="8" x2="12.01" y2="8" />
+          </svg>
+          <div>
+            {warnings.map((w) => (
+              <p key={w}>{w}</p>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="d-tiers-table">
         <div className="d-tiers-head-row">

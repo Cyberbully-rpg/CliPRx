@@ -41,6 +41,10 @@ export default function AppDashboard() {
   // tiers
   const [uploadId, setUploadId] = useState<string | null>(null);
   const [services, setServices] = useState<ServiceRow[]>([]);
+  // Non-fatal parse notices from the backend (e.g. a FOCUS export naming a cloud
+  // provider we have no pattern library for). Shown on the tier screen, since
+  // that's where the user is deciding what the analysis will cover.
+  const [uploadWarnings, setUploadWarnings] = useState<string[]>([]);
   const [tiers, setTiers] = useState<Record<string, 1 | 2 | 3>>({});
   const [runLoading, setRunLoading] = useState(false);
   const [runError, setRunError] = useState<string | null>(null);
@@ -65,6 +69,7 @@ export default function AppDashboard() {
     setFile(null);
     setUploadId(null);
     setServices([]);
+    setUploadWarnings([]);
     setTiers({});
     setUploadError(null);
     setRunError(null);
@@ -79,6 +84,7 @@ export default function AppDashboard() {
       const res = await uploadCsv(file, provider);
       setUploadId(res.upload_id);
       setServices(res.services);
+      setUploadWarnings(res.warnings ?? []);
       const initialTiers: Record<string, 1 | 2 | 3> = {};
       res.services.forEach((s) => (initialTiers[s.service_name] = s.default_tier));
       setTiers(initialTiers);
@@ -202,6 +208,7 @@ export default function AppDashboard() {
         {screen === "tiers" && (
           <TiersScreen
             services={services}
+            warnings={uploadWarnings}
             tiers={tiers}
             setTier={setTier}
             onBack={() => setScreen("upload")}

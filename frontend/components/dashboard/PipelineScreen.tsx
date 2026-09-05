@@ -28,7 +28,7 @@ export default function PipelineScreen({ serviceCount, provider, done }: Pipelin
     <div className="screen-enter d-screen" style={{ maxWidth: 580, textAlign: "center" }}>
       {!done && <div className="d-pipeline-spinner" />}
       <h1 style={{ fontFamily: "var(--font-serif-display)", fontSize: 28, fontWeight: 400, color: "var(--text-heading)" }}>
-        {done ? "Analysis complete" : "Running DIPPA pipeline"}
+        {done ? "Analysis complete" : "Recommendations are in progress"}
       </h1>
       <p style={{ marginTop: 8, fontSize: 14, color: "var(--text-muted)" }}>
         Analyzing {serviceCount} services · {provider.toUpperCase()}

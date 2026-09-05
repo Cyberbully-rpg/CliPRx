@@ -356,6 +356,28 @@ nav[data-paper] .nav-cta {
   background: #3fb87f;
   border-color: #3fb87f;
 }
+/* Informational, not an error — deliberately amber rather than ErrorBanner's red:
+   the upload succeeded, some rows just can't produce recommendations. */
+.d-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 12px 16px;
+  background: rgba(233, 162, 59, 0.08);
+  border: 1px solid rgba(233, 162, 59, 0.24);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  line-height: 1.55;
+  color: #8a5a12;
+}
+.d-notice > svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.d-notice p + p {
+  margin-top: 6px;
+}
 .rx-card {
   background: var(--surface-card);
   border: 1px solid var(--border-card);
@@ -366,6 +388,49 @@ nav[data-paper] .nav-cta {
 .rx-card:hover {
   transform: translate3d(0, -2px, 0);
   box-shadow: 0 6px 20px rgba(32, 32, 32, 0.06);
+}
+/* Collapsed by default: the ticket is the long-form deliverable, and expanding
+   every card by default would bury the ranked summary the report is scanned for. */
+.rx-ticket {
+  margin-bottom: 12px;
+}
+.rx-ticket > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--text-muted);
+  user-select: none;
+}
+.rx-ticket > summary::-webkit-details-marker {
+  display: none;
+}
+.rx-ticket > summary:hover {
+  color: var(--ink-700);
+}
+.rx-ticket > summary > svg {
+  transition: transform 0.15s ease;
+}
+.rx-ticket[open] > summary > svg {
+  transform: rotate(90deg);
+}
+.rx-ticket > pre {
+  margin: 10px 0 0;
+  padding: 14px 16px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--text-body);
+  /* Gemini returns hard-wrapped prose; wrap it rather than scroll it sideways. */
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  max-width: 720px;
 }
 .sidebar-link {
   display: flex;
