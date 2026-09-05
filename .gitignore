@@ -13,3 +13,5 @@ backend/.env
 .agents/
 .claude/
 skills-lock.json
+# Test artifacts
+.pytest_cache/

@@ -10,3 +10,6 @@ npm-debug.log*
 
 .vercel
 .env*
+
+# TypeScript incremental build info
+*.tsbuildinfo
