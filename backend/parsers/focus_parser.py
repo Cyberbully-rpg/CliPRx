@@ -158,7 +158,8 @@ def parse_focus_csv(file_content: bytes) -> pd.DataFrame:
     """
     Parses raw FOCUS 1.0 CSV bytes into a normalized DataFrame. Returns the
     standard 8 columns required by the ML engine, PLUS `detected_provider`
-    (one of 'aws'/'azure'/'gcp'/None per row) -- see module docstring.
+    (one of 'aws'/'azure'/'gcp'/None per row) and the raw `provider_name` it was
+    derived from -- see module docstring.
     """
     try:
         df = pd.read_csv(BytesIO(file_content))
@@ -233,6 +234,10 @@ def parse_focus_csv(file_content: bytes) -> pd.DataFrame:
             'billing_period_end',
             'tier',
             'detected_provider',
+            # Kept alongside detected_provider so the upload endpoint can name the
+            # providers it failed to recognize in its warnings, rather than only
+            # reporting a count of rows that will silently skip pattern matching.
+            'provider_name',
         ]
 
         return df[final_columns].reset_index(drop=True)

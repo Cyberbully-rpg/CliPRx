@@ -49,6 +49,34 @@ def fetch_upload_dataframe(admin_client, upload: dict) -> pd.DataFrame:
     return parse_by_provider(upload["cloud_provider"], file_bytes)
 
 
+def build_upload_warnings(df: pd.DataFrame) -> list[str]:
+    """
+    Populates the `warnings` array /upload/csv has always returned empty.
+
+    The one condition that genuinely warrants a warning today is a FOCUS export
+    carrying a ProviderName the parser can't map to one of the three pattern
+    libraries. Those rows parse fine, get anomaly-scored, and count toward the
+    services breakdown -- but ml/pattern_matcher.py drops them before matching
+    (`detected_provider` is null), so they can never produce a prescription. That
+    looks identical to "we analyzed it and found nothing," which is the wrong
+    conclusion to leave a user with.
+    """
+    if "detected_provider" not in df.columns:
+        return []
+
+    unmapped = df[df["detected_provider"].isna()]
+    if unmapped.empty:
+        return []
+
+    names = sorted({str(n).strip() for n in unmapped.get("provider_name", []) if str(n).strip()})
+    named = f" ({', '.join(names[:5])}{', ...' if len(names) > 5 else ''})" if names else ""
+    return [
+        f"{len(unmapped)} of {len(df)} rows list a cloud provider CliPRx has no "
+        f"pattern library for{named}. They were parsed and scored, but cannot "
+        f"produce recommendations - only AWS, Azure, and GCP rows can."
+    ]
+
+
 def build_service_rows(df: pd.DataFrame) -> list[dict]:
     """
     Aggregates the parsed DataFrame by service_name for the essential-services

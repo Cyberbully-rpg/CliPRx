@@ -7,6 +7,7 @@ from api.auth import get_current_user
 from db.migrations.supabase_client import get_supabase_admin_client
 from services.csv_ingest import (
     build_service_rows,
+    build_upload_warnings,
     enforce_upload_size,
     fetch_upload_dataframe,
     parse_by_provider,
@@ -45,7 +46,7 @@ async def upload_csv(
         "cloud_provider": provider,
         "service_count": int(df["service_name"].nunique()),
         "services": build_service_rows(df),
-        "warnings": [],
+        "warnings": build_upload_warnings(df),
     }
 
 
@@ -62,4 +63,5 @@ async def get_upload_services(upload_id: str, user: dict = Depends(get_current_u
         "cloud_provider": upload["cloud_provider"],
         "service_count": int(df["service_name"].nunique()),
         "services": build_service_rows(df),
+        "warnings": build_upload_warnings(df),
     }
